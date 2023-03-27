@@ -9,9 +9,10 @@ import {
   cilDrop,
   cilNotes,
   cilPencil,
-  cilPuzzle,
+  cilLineWeight,
   cilSpeedometer,
   cilStar,
+  cilMagnifyingGlass
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -49,13 +50,13 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Cadastros',
-    to: '/base',
-    icon: <CIcon icon={cilPuzzle} customClassName="nav-icon" />,
+   // to: '/base',
+    icon: <CIcon icon={cilLineWeight} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Veículos',
-        to: '/base/accordion',
+        to: '/base/veiculo',
       },
       {
         component: CNavItem,
@@ -130,7 +131,7 @@ const _nav = [
     component: CNavGroup,
     name: 'Consultas',
     to: '/buttons',
-    icon: <CIcon icon={cilCursor} customClassName="nav-icon" />,
+    icon: <CIcon icon={cilMagnifyingGlass} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
@@ -256,15 +257,18 @@ const _nav = [
   //   ],
   // },
   {
-    component: CNavItem,
+    component: CNavGroup,
     name: 'Relatórios',
-    to: '/widgets',
-    icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
-    badge: {
-      color: 'info',
-      //text: 'NEW',
-    },
-  },
+    to: '/buttons',
+    icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: 'Troca de óleo',
+        to: '/buttons/buttons',
+      },
+    ]
+  }
   // {
   //   component: CNavTitle,
   //   name: 'Extras',
