@@ -41,4 +41,10 @@ button{
 
 }
 
+@media(max-width: 600px){
+ button{
+    width: 100%;
+ }   
+}
+
 `
