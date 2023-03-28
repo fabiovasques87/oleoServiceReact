@@ -20,6 +20,25 @@ export const FormArea = styled.div`
     background-color:red;
 }
 
+.errors-alert{
+    color: red;
 
+}
+
+button{
+    width:120px;
+    padding:10px;
+    border-radius:8px;
+    margin-top:30px;
+    background-color: rgba(5, 200, 138);
+    color: #FFF;
+    transition: background .5s;
+    border: none;
+
+    &:hover{
+        background-color: rgba(116, 158, 137);
+    }
+
+}
 
 `
