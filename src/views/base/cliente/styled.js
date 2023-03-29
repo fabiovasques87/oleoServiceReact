@@ -39,6 +39,12 @@ button{
         background-color: rgba(116, 158, 137);
     }
 
+
+}
+
+span{
+    color:red;
+    padding: 10px;
 }
 
 @media(max-width: 600px){
