@@ -61,7 +61,8 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Clientes',
-        to: '/base/veiculo/Teste',
+        //to: '/base/veiculo/Teste',
+        to: '/base/cliente',
       },
     ],
   },

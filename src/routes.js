@@ -4,6 +4,7 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
 // Base
 const Veiculo = React.lazy(() => import('./views/base/veiculo/Veiculo'))
+const Cliente = React.lazy(() => import('./views/base/cliente/Cliente'))
 const Teste = React.lazy(() => import('./views/base/veiculo/Teste'))
 const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
 const Cards = React.lazy(() => import('./views/base/cards/Cards'))
@@ -53,6 +54,7 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/base/veiculo', name: 'Veiculo', element: Veiculo, exact: true },
+  { path: '/base/cliente', name: 'Cliente', element: Cliente, exact: true },
   { path: '/base/veiculo/Teste', name: 'Teste', element: Teste, exact: true },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
   { path: '/base/cards', name: 'Cards', element: Cards },

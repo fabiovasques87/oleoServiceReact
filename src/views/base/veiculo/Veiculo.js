@@ -26,121 +26,9 @@ import { Formik,withFormik } from 'formik';
 
 
 
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: {errors},
-  //   reset,
-  // } = useForm ({resolver: yupResolver(schema)});
-
-  // const onSubmitHandler = (data: ISignin) => {
-  //   console.log(data);
-  //   reset()
-  // };
-
-
 
   const Veiculo = () => {
 
-
-  
-
-
-  // // const [veiculo, setVeiculo] = useState({
-  // //   email:'',
-  // //   password:''
-  // // });
-
-  // // const [status, setStatus] = useState({
-  // //   type:'',
-  // //   mensagem:''
-  // // });
-
-
-  // // const valueInput = e=> setVeiculo({...veiculo,[e.target.email]: e.target.value });
-
-  // // const AddVeiculo = async e => {
-  // //   e.preventDefault();
-
-
-
-  // //   if(!(await validate())) return; // se retornar diferente de null, retorna e não continua o processamento
-  // //   //validação
-
-
-  // //   const saveDataForm = true; //aqui pode fazer a requisissao para o back...
-
-  // //   if(saveDataForm){
-  // //     setStatus({
-  // //       type:'success',
-  // //       mensagem: 'veículo cadastrado com sucesso!'
-  // //     });
-
-  // //     setVeiculo({
-  // //       email:'',
-  // //       password:''
-  // //     });
-
-  // //   }else{
-  // //     setStatus({
-  // //       type: 'error',
-  // //       mensagem:'Erro: não cadastrado!'
-  // //     });
-  // //   }
-
-
-
-  
-
-
-  // // const validate = async () => {
-  // //     const schema = yup.object().shape({
-  // //       email: yup.string("erro:").email().required("Erro:"),
-  // //       password: yup.string().min(8).max(32).required("Erro:"),
-  // //   });
-
-  // //   try{
-  // //     await schema.validate(veiculo);
-  // //     return true;
-  // //   }catch(err) {
-  // //     setStatus({
-  // //       type: 'error',
-  // //       mensagem: err.errors
-  // //     });
-  // //     return false; //indica que houve erros
-  // //   }
-
-  // // }
-
-  // }
-
-
-
-   
-
-  // validate: values => {
-  //   const {email, password} = values
-  //   const errors = {}
-
-  //   if(!email) {
-  //     errors.email= 'Informe o email!'
-  //   }else if(email.length < 5){
-  //     errors.email = 'infrome um e-mail!'
-  //   }
-
-  //   if(!password) errors.password= 'Informe uma senha!'
-
-  //   if(!password) errors.password= 'Informe a senha'
-
-  //   return errors
-
-
-  // }
-
-  // const mySchema = yup.object().shape({
-  //   email: yup.string().required(),
-  //   // password: yup.string().min(8).max(32).required()
-  // });
 
   const {register, handleSubmit, formState: { errors } } =  useForm();
   const onSubmit = async data => {
@@ -158,7 +46,7 @@ import { Formik,withFormik } from 'formik';
               <CCard className="p-4">
                 <CCardBody>
                   <FormArea>
-                    <h1 className="mb-5">Cadastro de veículos</h1>
+                    <h2 className="mb-5">Cadastro de veículos</h2>
              
                    <CForm onSubmit={handleSubmit()} > 
                      <CRow className="mb-8">
@@ -171,7 +59,7 @@ import { Formik,withFormik } from 'formik';
                             required: "Preenchimento obrigatório",
                             pattern: {
                               value: /\S+@\S+\.\S+/,
-                              message: "O valor inserido não corresponde ao formato de e-mail"
+                              message: "O valor inserido não corresponde ao formato de CPF/CNPJ"
                             }
                           }) }
                           />{errors.cpfProprietario && <span className='errors-alert'>{errors.cpfProprietario.message}</span>}
