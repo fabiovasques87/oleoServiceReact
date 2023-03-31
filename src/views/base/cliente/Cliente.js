@@ -23,8 +23,7 @@ import { useForm } from "react-hook-form";
 import * as yup from 'yup';
 import axios from 'axios';
 import {mask} from '../../../components/CnpjCpf/cpf';
-import TelefoneBrasileiroInput from "react-telefone-brasileiro";
-
+import { useEffect } from 'react'
 
 
 
@@ -71,8 +70,6 @@ import TelefoneBrasileiroInput from "react-telefone-brasileiro";
     // const [telefone, setTelefone] = useState("");
 
     
-
-
   return (
     <>
 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
   CAvatar,
@@ -17,10 +17,13 @@ import {
   CTableHead,
   CTableHeaderCell,
   CTableRow,
-} from '@coreui/react'
+ // CTooltip
+} from '@coreui/react';
+
 import { CChartLine } from '@coreui/react-chartjs'
 import { getStyle, hexToRgba } from '@coreui/utils'
-import CIcon from '@coreui/icons-react'
+import CIcon from '@coreui/icons-react';
+
 import {
   cibCcAmex,
   cibCcApplePay,
@@ -42,6 +45,7 @@ import {
   cilPeople,
   cilUser,
   cilUserFemale,
+  
 } from '@coreui/icons'
 
 import avatar1 from 'src/assets/images/avatars/1.jpg'
@@ -53,14 +57,55 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import { CFormInput } from '@coreui/react'
+
+import * as icon from '@coreui/icons';
+import {PageArea} from './styled';
+import {mask} from '../../components/CnpjCpf/cpf';
+
+
+
 
 const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
   
 
+      //mascara para cnpj
+      const [valor, setValor] = useState('');
+
+
+      const handleChangeMask = (event) =>{
+        const { value } = event.target
+      
+        setValor(mask(value))
+      }
+  
+
+
   return (
     <>
+    <PageArea>
+      <div className='searchArea'>
+        
+        <div className='searchArea-1'> 
+              <input type='text'  className='inputSearch' 
+                placeholder='Insira o CPF do proprietário'
+                name='cpf_cnpj' id="cpf_cnpj" onChange={handleChangeMask} value={valor}
+              /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
+        
+              <input type='text'  className='inputSearch'
+                placeholder='Insira a placa'
+              /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
+        
+              <input type='text'  className='search--3'
+                placeholder='Insira a placa'
+              /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
+        </div>
+    </div>
+
+    </PageArea>
+
     <WidgetsDropdown />
       <CCard className="mb-4">
         <CCardBody>

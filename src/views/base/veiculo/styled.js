@@ -25,6 +25,11 @@ export const FormArea = styled.div`
 
 }
 
+span{
+    color:red;
+    padding: 10px;
+}
+
 button{
     width:120px;
     padding:10px;
