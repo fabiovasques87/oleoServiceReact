@@ -89,6 +89,7 @@ const Dashboard = () => {
       <div className='searchArea'>
         
         <div className='searchArea-1'> 
+          <form>
               <input type='text'  className='inputSearch' 
                 placeholder='Insira o CPF do proprietário'
                 name='cpf_cnpj' id="cpf_cnpj" onChange={handleChangeMask} value={valor}
@@ -101,6 +102,7 @@ const Dashboard = () => {
               <input type='text'  className='search--3'
                 placeholder='Insira a placa'
               /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
+            </form>
         </div>
     </div>
 
