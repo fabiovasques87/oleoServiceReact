@@ -53,16 +53,17 @@ const _nav = [
    // to: '/base',
     icon: <CIcon icon={cilLineWeight} customClassName="nav-icon" />,
     items: [
-      {
-        component: CNavItem,
-        name: 'Veículos',
-        to: '/base/veiculo',
-      },
+     
       {
         component: CNavItem,
         name: 'Clientes',
         //to: '/base/veiculo/Teste',
         to: '/base/cliente',
+      },
+      {
+        component: CNavItem,
+        name: 'Veículos',
+        to: '/base/veiculo',
       },
     ],
   },

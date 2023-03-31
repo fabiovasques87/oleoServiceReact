@@ -34,6 +34,33 @@ export const  PageArea  = styled.div`
 
     }
 
+    @media(max-width: 600px){
+
+        .searchArea{
+            flex-direction: column;
+            
+
+            .searchArea-1{
+
+
+                .inputSearch, .search--3 {
+                    width:85%;
+                    margin-left:0;
+                }
+                
+            
+               
+
+            }
+
+        
+        }
+
+
+
+
+
+    }
    
 
 `
