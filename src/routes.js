@@ -6,7 +6,7 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Veiculo = React.lazy(() => import('./views/base/veiculo/Veiculo'))
 const Cliente = React.lazy(() => import('./views/base/cliente/Cliente'))
 const Teste = React.lazy(() => import('./views/base/veiculo/Teste'))
-const Breadcrumbs = React.lazy(() => import('./views/base/breadcrumbs/Breadcrumbs'))
+const Veiculos = React.lazy(() => import('./views/base/consulta/diversos/Veiculos'))
 const Cards = React.lazy(() => import('./views/base/cards/Cards'))
 const Carousels = React.lazy(() => import('./views/base/carousels/Carousels'))
 const Collapses = React.lazy(() => import('./views/base/collapses/Collapses'))
@@ -54,9 +54,9 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/base/veiculo', name: 'Veiculo', element: Veiculo, exact: true },
+  { path: '/base/consulta/diversos', name: 'Veiculos', element: Veiculos, exact: true },
   { path: '/base/cliente', name: 'Cliente', element: Cliente, exact: true },
   { path: '/base/veiculo/Teste', name: 'Teste', element: Teste, exact: true },
-  { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
   { path: '/base/cards', name: 'Cards', element: Cards },
   { path: '/base/carousels', name: 'Carousel', element: Carousels },
   { path: '/base/collapses', name: 'Collapse', element: Collapses },

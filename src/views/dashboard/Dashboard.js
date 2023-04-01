@@ -88,22 +88,20 @@ const Dashboard = () => {
     <PageArea>
       <div className='searchArea'>
         
-        <div className='searchArea-1'> 
           <form>
-              <input type='text'  className='inputSearch' 
+              <input type='text'  className='inputSearch--1' 
                 placeholder='Insira o CPF do proprietário'
                 name='cpf_cnpj' id="cpf_cnpj" onChange={handleChangeMask} value={valor}
               /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
         
-              <input type='text'  className='inputSearch'
+              <input type='text'  className='inputSearch--2'
                 placeholder='Insira a placa'
               /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
         
-              <input type='text'  className='search--3'
+              <input type='text'  className='inputSearch--3'
                 placeholder='Insira a placa'
               /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
             </form>
-        </div>
     </div>
 
     </PageArea>

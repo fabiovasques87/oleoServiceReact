@@ -145,6 +145,11 @@ const _nav = [
         name: 'Veículos',
         to: '/buttons/button-groups',
       },
+      {
+        component: CNavItem,
+        name: 'Diversos',
+        to: '/base/consulta/diversos',
+      },
       // {
       //   component: CNavItem,
       //   name: 'Dropdowns',
