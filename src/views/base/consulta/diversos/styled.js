@@ -11,7 +11,7 @@ export const  PageArea  = styled.div`
 
 
             .inputSearch--1, .inputSearch--2,.inputSearch--3{
-                width: 400px;
+                width: 380px;
                 margin-bottom: 20px;
                 padding: 10px;
                 outline: 0;

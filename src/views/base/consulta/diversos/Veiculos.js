@@ -6,7 +6,21 @@ import * as icon from '@coreui/icons';
 
 import { Tooltip } from 'bootstrap';
 import data from '../../../../components/tooltip/tooltip'
-
+import {
+    CCard,
+    CCardBody,
+    CCardHeader,
+    CCol,
+    CRow,
+    CAccordion,
+    CAccordionBody,
+    CAccordionHeader,
+    CAccordionItem,
+    CFormSelect,
+    CTooltip,
+    CCardGroup
+    
+  } from '@coreui/react'
 
 
 
@@ -72,9 +86,11 @@ const Veiculos = () => {
 
         <div>
 
-            
-
-        <PageArea>
+<container-xl>
+    <CRow className="justify-content-center">
+        <CCard className="p-4">
+            <CCardBody>
+                <PageArea>
             <div className='searchArea'>
                 
                     <form>
@@ -100,7 +116,11 @@ const Veiculos = () => {
                     </form>
             </div>
 
-    </PageArea>
+            </PageArea>
+        </CCardBody>
+       </CCard>
+  </CRow>
+</container-xl>
         </div>
     )
 }
