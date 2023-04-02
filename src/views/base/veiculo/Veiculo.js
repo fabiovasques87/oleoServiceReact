@@ -168,11 +168,11 @@ import * as icon from '@coreui/icons';
                                 {errors.tipo_veiculo && <span className='errors-alert'>{errors.tipo_veiculo.message}</span>}
                             </CCol>
                             
-                        <CFormLabel htmlFor="marca_veiculo" className="col-sm-2 col-form-label">Marca do Veículo <span>*</span></CFormLabel>
+                        <CFormLabel htmlFor="marca_veiculo" className="col-sm-2 col-form-label">Fabricante <span>*</span></CFormLabel>
                             <CCol sm={4}>
                             <CFormSelect name='marca_veiculo' id='options'                           
                             > 
-                              <option value={buscaVeiculos()}>Selecionae uma opção</option> {/*vai buscar os dados da API  */}
+                              <option value={buscaVeiculos()}>Selecione uma opção</option> {/*vai buscar os dados da API  */}
                                 {options.map(option=>(
                                   //busca os dados da api conforme busca no campo tippo do veiculo
                                   <option key={option.codigo} value={option.codigo}>{option.nome}</option>
@@ -191,7 +191,7 @@ import * as icon from '@coreui/icons';
 
                       <CRow className="mb-8">
 
-                      <CFormLabel htmlFor="modelo_veiculo" className="col-sm-2 col-form-label">Modelo do Veículo <span>*</span></CFormLabel>
+                      <CFormLabel htmlFor="modelo_veiculo" className="col-sm-2 col-form-label">Marca Veículo <span>*</span></CFormLabel>
                             <CCol sm={4}>
                             <CFormInput type='text' name='modelo_veiculo' id='modelo_veiculo'
                              {...register("modelo_veiculo", {

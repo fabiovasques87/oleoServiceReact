@@ -138,12 +138,12 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Clientes',
-        to: '/buttons/buttons',
+        to: '/base/consulta/cliente',
       },
       {
         component: CNavItem,
         name: 'Veículos',
-        to: '/buttons/button-groups',
+        to: '/base/consulta/veiculo',
       },
       {
         component: CNavItem,
