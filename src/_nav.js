@@ -266,13 +266,12 @@ const _nav = [
   {
     component: CNavGroup,
     name: 'Relatórios',
-    to: '/buttons',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
     items: [
       {
         component: CNavItem,
         name: 'Troca de óleo',
-        to: '/buttons/buttons',
+        to: '/base/relatorio',
       },
     ]
   }
