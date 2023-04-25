@@ -34,9 +34,25 @@ const TrocaOleo = () => {
 
     const {register, handleSubmit, formState: { errors } } =  useForm(); //cuida das validacoes dos campos
 
+    const [dados, setDados] = useState({});
+
+    useEffect(() => {
+      async function fetchData() {
+        const response = await fetch('http://localhost:4000/trocavencidas');
+        const data = await response.json();
+        setDados(data);
+      }
+      fetchData();
+    }, []);
+    
+
     return (
         <>
         
+
+
+        {dados.cod_servicos}
+
             <CContainer>
             <CRow className="justify-content-center">
             <CCardGroup>

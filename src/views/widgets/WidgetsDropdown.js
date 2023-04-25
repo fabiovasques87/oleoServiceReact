@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CRow,
   CCol,
@@ -14,11 +14,68 @@ import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import {PageArea} from './styled';
 
+
+
 const WidgetsDropdown = () => {
+
+
+
+  // const [dados, setDados] = useState([]);
+
+//exibe a quantidade de trocas vencidas
+
+  const [vencidos, setVencidos] = useState(null);
+
+useEffect(() => {
+  async function fetchData() {
+    const response = await fetch('http://localhost:4000/trocavencidas');
+    const data = await response.json();
+    const parsedData = JSON.parse(data);
+    if (parsedData && parsedData.length > 0 ){
+      setVencidos(parsedData[0].vencidas);
+    }
+  }
+  fetchData();
+  //console.log('seus Dados:', teste);
+}, []);
+
+//exibe a quantidade de trocas a vencer
+
+const [valorVencer, setValorVencer] = useState(null);
+
+useEffect(() => {
+  async function fetchData() {
+    const response = await fetch('http://localhost:4000/trocaAVencer');
+    const data = await response.json();
+    console.log("dados: ", data);
+    const parsedData = JSON.parse(data);
+    if (parsedData && parsedData.length > 0 ){
+      setValorVencer(parsedData[0].vencer);
+    }
+  }
+  fetchData();
+}, []);
+
+//exibe todas as trocas realizadas
+
+const [trocasAll, setTrocasAll] = useState(0);
+
+useEffect(() => {
+  async function fetchData() {
+    const response = await fetch('http://localhost:4000/searchServicos');
+    const data = await response.json();
+    setTrocasAll(data);
+  }
+  fetchData();
+  //console.log('seus Dados:', teste);
+}, []);
+  
+
   return (
     
    <>
- 
+
+
  <PageArea>
     <CRow>
         <CCol sm={6} lg={4}>
@@ -43,7 +100,9 @@ const WidgetsDropdown = () => {
           */}
 
 
-              <div className="card1">200</div> 
+              <div className="card1">
+                  {trocasAll.services}  
+              </div> 
 
             </CDropdown>}
             
@@ -74,7 +133,9 @@ const WidgetsDropdown = () => {
              </CDropdownToggle>
            */}
 
-            <div className="card2">10</div> 
+            <div className="card2">
+              {valorVencer}
+            </div> 
               <CDropdownMenu>
                 <CDropdownItem>Action</CDropdownItem>
                 <CDropdownItem>Another action</CDropdownItem>
@@ -106,7 +167,19 @@ const WidgetsDropdown = () => {
               </CDropdownToggle>
             */}
 
-              <div className="card3">20</div> 
+              <div className="card3">
+                  {/* {dados.map((item)=>(
+                     <li key={item.cod_servicos}>{item.cod_servicos}</li> 
+                  ))} */}
+
+            
+                {vencidos}
+
+              </div> 
+              {/* {dados.map((item, index)=>(
+                <div key={index}>{item.proxima_troca}</div>
+              ))} */}
+
               <CDropdownMenu>
                 <CDropdownItem>Action</CDropdownItem>
                 <CDropdownItem>Another action</CDropdownItem>
@@ -120,6 +193,9 @@ const WidgetsDropdown = () => {
         </CCol>
       </CRow>
       </PageArea> 
+      {/* {valorVencer !== null ? `Valor a vencer: ${valorVencer}` : 'Carregando...'}   */}
+
+
       </>
        
 
