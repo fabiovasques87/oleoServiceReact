@@ -66,15 +66,11 @@ import { Tooltip } from 'bootstrap';
 import data from '../../components/tooltip/tooltip';
 
 
-
-
-
-
-
 const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 
   
+  const [cpf, setCpf] = useState('');
 
       //mascara para cnpj
       const [valor, setValor] = useState('');
@@ -136,7 +132,7 @@ const Dashboard = () => {
           <form>
               <input type='text'  className='inputSearch--1' 
                 placeholder='Insira o CPF do proprietário'
-                name='cpf_cnpj' id="cpf_cnpj" onChange={handleChangeMask} value={valor}
+                name='cpf_cnpj' id="cpf_cnpj" onChange={handleChangeMask} value={cpf}
                 ref={cpfProp}
               /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
         

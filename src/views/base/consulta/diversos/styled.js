@@ -7,7 +7,7 @@ export const  PageArea  = styled.div`
         width: 100%;
         display: flex;
         
-       
+      
 
 
             .inputSearch--1, .inputSearch--2,.inputSearch--3{
@@ -37,10 +37,22 @@ export const  PageArea  = styled.div`
                 margin-top:12px;
                 }
 
-            
-
+               
+              
 
     }
+
+
+    .titleRelat{
+                    
+        font-size:40px;
+        font-weight: bold;
+        font-family: arial;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+} 
 
     @media(max-width: 600px){
 
@@ -93,5 +105,18 @@ export const  PageArea  = styled.div`
 
     }
    
+    @media print {
+        form {
+            display: none;
+        }
+        .button{
+            display: none;
+        }
+        @page {
+            margin: 0;
+            size: auto;
+          }
+         
+    }
 
 `

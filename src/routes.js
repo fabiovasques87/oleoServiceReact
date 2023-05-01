@@ -9,6 +9,7 @@ const Veiculos = React.lazy(() => import('./views/base/consulta/diversos/Veiculo
 const ConsultaCliente = React.lazy(() => import('./views/base/consulta/cliente/ConsultaCliente')) //consulta de clientes
 const ConsultaVeiculo = React.lazy(() => import('./views/base/consulta/veiculo/ConsultaVeiculo'))//consulta de veiculos
 const trocaOleo = React.lazy(()=> import('./views/base/relatorio/trocaOleo'))
+const teste = React.lazy(()=> import('./views/base/teste/teste'))
 
 
 
@@ -43,6 +44,8 @@ const routes = [
   { path: '/base/consulta/cliente', name: 'ConsultaCliente', element: ConsultaCliente, exact: true },//consulta Clientes
   { path: '/base/consulta/veiculo', name: 'ConsultaVeiculo', element: ConsultaVeiculo, exact: true },//consulta Veículos
   { path: '/base/relatorio', name: 'trocaOleo', element: trocaOleo, exact: true },//consulta Veículos
+  { path: '/base/teste', name: 'teste', element: teste, exact: true },//página de testes...
+
 
   
 ]

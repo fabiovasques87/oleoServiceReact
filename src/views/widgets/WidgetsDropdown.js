@@ -28,7 +28,7 @@ const WidgetsDropdown = () => {
 
 useEffect(() => {
   async function fetchData() {
-    const response = await fetch('http://localhost:4000/trocavencidas');
+    const response = await fetch('http://192.168.0.109:4000/trocavencidas');
     const data = await response.json();
     const parsedData = JSON.parse(data);
     if (parsedData && parsedData.length > 0 ){
@@ -45,7 +45,7 @@ const [valorVencer, setValorVencer] = useState(null);
 
 useEffect(() => {
   async function fetchData() {
-    const response = await fetch('http://localhost:4000/trocaAVencer');
+    const response = await fetch('http://192.168.0.109:4000/trocaAVencer');
     const data = await response.json();
     console.log("dados: ", data);
     const parsedData = JSON.parse(data);
@@ -62,7 +62,7 @@ const [trocasAll, setTrocasAll] = useState(0);
 
 useEffect(() => {
   async function fetchData() {
-    const response = await fetch('http://localhost:4000/searchServicos');
+    const response = await fetch('http://192.168.0.109:4000/searchServicos');
     const data = await response.json();
     setTrocasAll(data);
   }
