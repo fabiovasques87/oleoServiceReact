@@ -48,6 +48,8 @@ export const  PageArea  = styled.div`
         font-size:40px;
         font-weight: bold;
         font-family: arial;
+        margin-top:10px;
+        margin-bottom:20px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -65,7 +67,14 @@ export const  PageArea  = styled.div`
                     width:98%;
                     margin-left:0;
                 }
-             
+
+                .titleRelat{
+                    font-size: 10px;
+                }
+                .button{
+                    width: 100%;
+                    margin-top:20px;
+                }
         }
 
 
@@ -82,7 +91,13 @@ export const  PageArea  = styled.div`
                     width:98%;
                     margin-left:0;
                 }
-             
+                .titleRelat{
+                    font-size: 20px;
+                }
+                .button{
+                    margin-top:20px;
+                    width: 100%;
+                }
         }
 
 
@@ -102,6 +117,15 @@ export const  PageArea  = styled.div`
              
         }
 
+        .titleRelat{
+            margin-top:5px;
+            font-size: 20px;
+        }
+
+        .button{
+            margin-top:20px;
+            width: 100%;
+        }
 
     }
    
@@ -112,11 +136,24 @@ export const  PageArea  = styled.div`
         .button{
             display: none;
         }
-        @page {
-            margin: 0;
-            size: auto;
+       
+          .nav-item{
+            display:none;
           }
+       .titleRelat{
+        font-size:30px;
+        margin-top:50px;
+        margin-bottom:50px;
+       }
+       
+       table, tbody{
+        margin-top:40px;
+       }
          
     }
+    @page {
+        margin: 0;
+        size: auto;
+      }
 
 `

@@ -243,8 +243,9 @@ const Veiculos = () => {
             <th>Nome</th>
             <th>Sobrenome</th>
             <th>Placa </th>
-            <th>Tipo de Veículo </th>
+            <th>Tipo Veículo </th>
             <th>Fabricante Veículo </th>
+            <th>Marca Veículo </th>
 
           </tr>
         </thead>
@@ -255,6 +256,7 @@ const Veiculos = () => {
             <td>{cliente.placa_veiculo}</td>
             <td>{cliente.tipo_veiculo}</td>
             <td>{cliente.fabricante_veiculo}</td>
+            <td>{cliente.modelo_veiculo}</td>
           </tr>
           
           
