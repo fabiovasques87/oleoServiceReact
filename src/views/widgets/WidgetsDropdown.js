@@ -29,6 +29,7 @@ const WidgetsDropdown = () => {
 useEffect(() => {
   async function fetchData() {
     const response = await fetch('http://192.168.0.109:4000/trocavencidas');
+    // const response = await fetch('http://localhost:4000/trocavencidas');
     const data = await response.json();
     const parsedData = JSON.parse(data);
     if (parsedData && parsedData.length > 0 ){

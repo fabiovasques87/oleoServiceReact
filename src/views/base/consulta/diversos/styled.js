@@ -3,6 +3,10 @@ import styled from "styled-components";
 
 export const  PageArea  = styled.div`
 
+    .formatTable{
+       text-align: center;
+       }
+
     .searchArea{
         width: 100%;
         display: flex;
@@ -37,7 +41,7 @@ export const  PageArea  = styled.div`
                 margin-top:12px;
                 }
 
-               
+             
               
 
     }

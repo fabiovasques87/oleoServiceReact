@@ -5,23 +5,9 @@ import CIcon from '@coreui/icons-react';
 import * as icon from '@coreui/icons';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import { renderToStaticMarkup } from 'react-dom/server';
-import logo from '../../../../assets/images/logo.png';
-
-
-
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
-// import html2pdf from 'html2pdf.js';
-// import { toPng } from 'html-to-image';
-// import htmlToImage from 'html-to-image';
-
-// import jsPDF from 'jspdf';
-
-import pdfMake from "pdfmake/build/pdfmake";
-import pdfFonts from "pdfmake/build/vfs_fonts";
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
-import htmlToPdfMake from "html-to-pdfmake";
+import { PDFViewer, PDFDownloadLink, Page, Text, View, Document, StyleSheet } from '@react-pdf/renderer';
 
 import { Tooltip } from 'bootstrap';
 import data from '../../../../components/tooltip/tooltip'
@@ -42,6 +28,44 @@ import {
   } from '@coreui/react'
 
 
+
+
+  //css para o pdf gerado
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'row',
+      backgroundColor: '#E4E4E4'
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1
+    }
+  });
+
+
+  function MyDocument() {
+    return (
+      <Document>
+        <Page size="A4" style={styles.page}>
+          <View style={styles.section}>
+            <Text>Section #1</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Section #2</Text>
+          </View>
+        </Page>
+        <Page size="A4" style={styles.page}>
+          <View style={styles.section}>
+            <Text>Section #3</Text>
+          </View>
+          <View style={styles.section}>
+            <Text>Section #4</Text>
+          </View>
+        </Page>
+      </Document>
+    );
+  }
 
 const Veiculos = () => {
 
@@ -85,8 +109,8 @@ const Veiculos = () => {
       };
 
     const handleSubmit = async () => {
-        const response = await fetch(`http://192.168.0.109:4000/trocaCpf/${valor}`);
-        // const response = await fetch(`http://localhost:4000/trocaCpf/${valor}`);
+        // const response = await fetch(`http://192.168.0.109:4000/trocaCpf/${valor}`);
+        const response = await fetch(`http://localhost:4000/trocaCpf/${valor}`);
         const data = await response.json();
       
         if (!data) {
@@ -180,109 +204,13 @@ const Veiculos = () => {
 
         // Função para gerar o PDF
 
-        
-        const  exportPDF =  () =>{
+        const [showPDF, setShowPDF] = useState(false);
 
-          //           // Seleciona a div que contém o conteúdo a ser convertido para PDF
-          // const content = document.getElementById('relat');
+        const handleButtonClick = () => {
+          setShowPDF(true);
+        }
 
-          // const fileName = "relatorio.pdf";
-
-
-          // // Converte o conteúdo da div para pdfmake
-          // const pdfContent = htmlToPdfMake(content.innerHTML);
-
-          
-
-          // // Cria o documento PDF com o cont'eúdo
-          // const docDefinition = { content: pdfContent };
-          
-          // // Gera o arquivo PDF
-          // pdfMake.createPdf(docDefinition).download(fileName);
-
-          // const ul = document.getElementById('relat');
-          
-          // const pdfContent = htmlToPdfMake(ul.innerHTML);
-
-          // const docDefinition = 
-          // { 
-            
-          //   content: pdfContent };
-          // const fileName = "relatorio.pdf";
-         
-
-          // pdfMake.createPdf(docDefinition).download(fileName);
-
-          //Funciona
-          // Seleciona a div que contém o conteúdo a ser convertido para PDF
-          const ul = document.getElementById('relat');
-          const title = document.getElementById('titleRelat'); //estiliza o titulo do relatório
-
-
-          // Remove bordas da tabela e das células da tabela
-          ul.querySelectorAll('table, td, th').forEach(element => {
-            element.style.border = 'none';
-          });
-                    
-          //estiliza o titulo do relatório
-          title.style.fontSize = '22pt';
-          title.style.fontWeight = 'bold';
-          title.style.textAlign = 'center';
-          title.style.marginBottom = '30px';
-
-          const pdfContent = htmlToPdfMake(ul.innerHTML, title.innerHTML);
-
-          const docDefinition = {
-            content: pdfContent
-          };
-
-          const fileName = "relatorioVeiculosClientes.pdf";
-
-          pdfMake.createPdf(docDefinition).download(fileName);
-
-          
-
-
-};
-
-
-        
-
-         
-
-
-        
-
-         
-
-          // const input = document.getElementById('content');
-          // html2canvas(input, {
-          //   scale: 2,
-          //   useCORS: true,
-          //   scrollX: 0,
-          //   scrollY: -window.scrollY
-          // }).then((canvas) => {
-          //   const imgData = canvas.toDataURL('image/png');
-          //   const pdf = new jsPDF('p', 'mm', 'a4');
-          //   const imgProps = pdf.getImageProperties(imgData);
-          //   const pdfWidth = pdf.internal.pageSize.getWidth();
-          //   const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-          //   pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-          //   pdf.save('RelatorioVeiculosporCliente.pdf');
-          // });
-
-          // const input = document.getElementById('content');
-          // html2canvas(input)
-          //   .then((canvas) => {
-          //     const imgData = canvas.toDataURL('image/png');
-          //     const pdf = new jsPDF('p', 'pt', [950, 2000]);
-          //     pdf.addImage(imgData, 'PNG', 0, 0);
-          //     pdf.save("download.pdf");
-          //   });
-        
-        
-
-        // const gerarPDF = async () => {
+        const gerarPDF = async () => {
 
           // const doc = new jsPDF();
 
@@ -300,7 +228,7 @@ const Veiculos = () => {
            // Define as dimensões da página
            
             
-        // }
+        }
 
      
 
@@ -370,19 +298,20 @@ const Veiculos = () => {
                     <p>Não encontrado!</p>
                    )} */}
 
-   
+    <button onClick={handleButtonClick}>Gerar PDF</button>
+          {showPDF ? (
+            <PDFViewer style={{ width: '100%', height: '500px' }}>
+              <MyDocument />
+            </PDFViewer>
+          ) : null}
 
 
                     {cpfNotFound && <p>CPF não encontrado</p>}
 
-                    <div id='relat'  >
-                    
-                   
+                    <div id="content" >
 
-{cpfSearch.resultado.length > 0  &&
-
-    <p className='titleRelat' id='titleRelat'>Relatório de Veículo por cliente</p>
-    
+{cpfSearch.resultado.length > 0 && 
+    <p className='titleRelat'>Relatório de Veículo por cliente</p>
 }
 
 
@@ -417,21 +346,16 @@ const Veiculos = () => {
         </tbody>
             </Table>
 
-
       </div>
       
       
     )) }
-
-  
     
 </div>
-
-
     {/* {Só mostrará o botão se encontrar resultados para exibir...} */}
 
 {cpfSearch.resultado.length > 0 &&
-          <Button className='button'  variant="success" onClick={exportPDF}>Gerar PDF</Button>
+          <Button className='button' variant="success" onClick={gerarPDF}>Gerar PDF</Button>
 }
 
 
