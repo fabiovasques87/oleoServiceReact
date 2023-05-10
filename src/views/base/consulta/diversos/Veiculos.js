@@ -232,7 +232,8 @@ const [showModal, setShowModal] = useState(false);
 // const [selectedData, setSelectedData] = useState(null);
 
  //chama a função de histórico do veículo
- const [searchhistyPlaca, setSearchhistyPlaca ] = useState ({ trocaOleo: [] })
+ const [searchhistyPlaca, setSearchhistyPlaca ] = useState ({ resultado: [] })
+// const [searchhistyPlaca, setSearchhistyPlaca ] = useState ([]);
 
 
 //teste de Modal
@@ -284,8 +285,20 @@ const closeModal = () => {
 const buscarInformacoesVeiculo = async (cod_veiculo) =>{
     const response = await fetch(`http://192.168.0.104:4000/servicoTrocaVencendo/${cod_veiculo}`);
     const data = await response.json();
-    setSearchhistyPlaca(data);
-    console.log('teste', data);
+    if (!data) {
+      console.error('A resposta da API não contém a chave "resultado".');
+      return;
+    }
+  
+    try {
+      const resultado = JSON.parse(data.resultado);
+      setSearchhistyPlaca({ resultado });
+    } catch (e) {
+      console.error('Erro ao analisar a string JSON:', e.message);
+      searchhistyPlaca({ resultado: [] });
+      
+    }
+  
 
 }
         
@@ -388,7 +401,7 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
             <th>Tipo Veículo </th>
             <th>Fabricante Veículo </th>
             <th>Marca Veículo </th>
-            <th>Ações</th>
+            <th colSpan={2}  style={{textAlign:'center'}}>Ações</th>
 
           </tr>
         </thead>
@@ -402,6 +415,7 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
             <td>{cliente.modelo_veiculo}</td>
             {/* <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)}> Histórico</Button></td> */}
              <td><Button variant='success' onClick={() => openModal(cliente.cod_veiculo)}> Histórico</Button></td>
+              <td><Button className='bootEditar' variant='primary'>Editar</Button></td>
           </tr>
           
           
@@ -486,48 +500,76 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
       <Modal.Body>
 
         {/* Aqui você pode exibir as informações do veículo */}
-        {searchhistyPlaca.trocaOleo ? (
-          searchhistyPlaca.trocaOleo.map((infoVeiculo) => (
-            <Table responsive="md">
+
+
+
+        {searchhistyPlaca.resultado ? (
+          searchhistyPlaca.resultado.map((infoVeiculo) => (
+            
+            <div className="table-responsive">
+            <Table className='tableHisty' style={{fontSize: '14px'}}>
               <thead>
                 <tr>
-                  <th>Nome</th>
-                  <th>Sobrenome</th>
-                  <th>Placa </th>
-                  <th>Tipo Veículo </th>
-                  <th>Fabricante Veículo </th>
-                  <th>Marca Veículo </th>
                   <th>Data de Troca</th>
                   <th>Próxima de Troca</th>
+                  <th>KM</th>
+                  <th>Tipo óleo</th>
+                  <th>Filtro óleo</th>
+                  <th>Troca Filtro óleo?</th>
+                  <th>Filro Combustível</th>
+                  <th>Troca Filtro combustível?</th>
+                  <th>Filtro Cabine</th>
+                  <th>Trocado filtro cabine?</th>
+                  <th>Filtro ar</th>
+                  <th>Troca filtro ar?</th>
+                  <th>OBS</th>
+                  <th>quantidade óleo</th>
                   
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>{infoVeiculo.cliente.nome_cliente}</td>
-                  <td>{infoVeiculo.cliente.sobrenome_cliente}</td>
-                  <td>{infoVeiculo.placa_veiculo}</td>
-                  <td>{infoVeiculo.tipo_veiculo}</td>
-                  <td>{infoVeiculo.fabricante_veiculo}</td>
-                  <td>{infoVeiculo.modelo_veiculo}</td>
-                  <td>{infoVeiculo.servicos[0].data_troca}</td>
-                  <td>{infoVeiculo.servicos[0].proxima_troca}</td>
+                  <td>{infoVeiculo.data_troca}</td>
+                  <td>{infoVeiculo.proxima_troca}</td>
+                  <td>{infoVeiculo.km}</td>
+                  <td>{infoVeiculo.tipo_oleo}</td>
+                  <td>{infoVeiculo.filtro_oleo}</td>
+                  <td>{infoVeiculo.status_filtro_oleo}</td>
+                  <td>{infoVeiculo.filtro_combustivel}</td>
+                  <td>{infoVeiculo.status_filtro_combustivel}</td>
+                  <td>{infoVeiculo.filtro_cabine}</td>
+                  <td>{infoVeiculo.status_filtro_cabine}</td>
+                  <td>{infoVeiculo.filtro_ar}</td>
+                  <td>{infoVeiculo.status_filtro_ar}</td>
+                  <td>{infoVeiculo.obs_troca}</td>
+                  <td>{infoVeiculo.qtd_oleo}</td>
+
+
                 </tr>
               </tbody>
             </Table>
+            </div>
           ))
         ) : (
           <div>Nenhum histórico encontrado</div>
         )}
+
+
+
+
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={closeModal}>
+        <Button variant="secondary" onClick={closeModal} style={{padding:'10px', width:'120px'}}>
           Fechar
+        </Button>
+        <Button variant="secondary" onClick={closeModal} style={{padding:'10px'}}>
+          Gerar Relatório
         </Button>
       </Modal.Footer>
     </div>
   {/* </div> */}
 </Modal>
+
 
 
             </PageArea>

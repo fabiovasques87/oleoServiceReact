@@ -63,12 +63,13 @@ export const  PageArea  = styled.div`
         justify-content: center;
         align-items: center;
     
-} 
+    } 
 
-.nada{
-    background-color: red;
-    width: 150vh !important;
- }
+    //estilo botões do relatorio veiculo por cliente
+
+    .bootEditar{
+        width: 105px;
+    }
 
     @media(max-width: 600px){
 
