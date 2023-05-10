@@ -22,7 +22,7 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfMake from "html-to-pdfmake";
-
+import moment from "moment";
 
 import { Tooltip } from 'bootstrap';
 import data from '../../../../components/tooltip/tooltip'
@@ -179,7 +179,7 @@ const Veiculos = () => {
 
       
 
-        // Função para gerar o PDF
+        // Função para gerar o PDF do relatorio veiculos por clientes
 
         
         const  exportPDF =  () =>{
@@ -224,6 +224,55 @@ const Veiculos = () => {
         
 
        
+};
+
+
+
+
+//gera o pdf a partir do modal do histórico do veiculo
+
+const  exportPDFHisty =  () =>{
+
+         
+
+  //Funciona
+  // Seleciona a div que contém o conteúdo a ser convertido para PDF
+  const ul = document.getElementById('relatHistyModal');
+  // const title = document.getElementById('titleRelat'); //estiliza o titulo do relatório
+
+  // Remove bordas da tabela e das células da tabela
+  ul.querySelectorAll('table, td, th').forEach(element => {
+    element.style.border = 'none';
+  });
+            
+  //estiliza o titulo do relatório
+  // title.style.fontSize = '22pt';
+  // title.style.fontWeight = 'bold';
+  // title.style.textAlign = 'center';
+  // title.style.marginBottom = '30px';
+
+  //esse código faz com que após clicar no botao de gerar cpf, volte a ter bordas normais na tabela
+
+  ul.querySelectorAll('tbody').forEach(element => {
+    element.style.borderBottom = '0.1px solid #ccc';
+  });
+  ul.querySelectorAll('tbody').forEach(element => {
+    element.style.borderTop = '0.1px solid #ccc';
+  });
+
+  const pdfContent = htmlToPdfMake(ul.innerHTML);
+
+  const docDefinition = {
+    content: pdfContent,pageOrientation: 'landscape'
+  };
+
+  const fileName = "relatorioHisóricoVeiculo.pdf";
+
+  pdfMake.createPdf(docDefinition).download(fileName);
+
+
+
+
 };
 
 //Modal para abrir o histórico do veículo
@@ -501,7 +550,7 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
 
         {/* Aqui você pode exibir as informações do veículo */}
 
-
+        <div id='relatHistyModal'>
 
         {searchhistyPlaca.resultado ? (
           searchhistyPlaca.resultado.map((infoVeiculo) => (
@@ -529,8 +578,8 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
               </thead>
               <tbody>
                 <tr>
-                  <td>{infoVeiculo.data_troca}</td>
-                  <td>{infoVeiculo.proxima_troca}</td>
+                  <td>{moment(infoVeiculo.data_troca).format("DD/MM/YYYY")}</td>
+                  <td>{moment(infoVeiculo.proxima_troca).format("DD/MM/YYYY")}</td>
                   <td>{infoVeiculo.km}</td>
                   <td>{infoVeiculo.tipo_oleo}</td>
                   <td>{infoVeiculo.filtro_oleo}</td>
@@ -553,7 +602,7 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
         ) : (
           <div>Nenhum histórico encontrado</div>
         )}
-
+    </div>
 
 
 
@@ -562,7 +611,7 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
         <Button variant="secondary" onClick={closeModal} style={{padding:'10px', width:'120px'}}>
           Fechar
         </Button>
-        <Button variant="secondary" onClick={closeModal} style={{padding:'10px'}}>
+        <Button variant="secondary" onClick={exportPDFHisty} style={{padding:'10px'}}>
           Gerar Relatório
         </Button>
       </Modal.Footer>
