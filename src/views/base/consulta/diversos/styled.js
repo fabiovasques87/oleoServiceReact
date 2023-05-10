@@ -24,7 +24,7 @@ export const  PageArea  = styled.div`
               }
               
               .inputSearch--1{
-                margin-left: 5px;
+                  margin-left: 5px;
               }
               .inputSearch--2{
                 margin-left: 35px;
@@ -41,10 +41,15 @@ export const  PageArea  = styled.div`
                 margin-top:12px;
                 }
 
-             
+           
               
-
+                  
+                 
     }
+
+
+
+      
 
 
     .titleRelat{
@@ -59,6 +64,11 @@ export const  PageArea  = styled.div`
         align-items: center;
     
 } 
+
+.nada{
+    background-color: red;
+    width: 150vh !important;
+ }
 
     @media(max-width: 600px){
 

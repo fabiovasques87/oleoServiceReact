@@ -5,9 +5,9 @@ import CIcon from '@coreui/icons-react';
 import * as icon from '@coreui/icons';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
 import { renderToStaticMarkup } from 'react-dom/server';
 import logo from '../../../../assets/images/logo.png';
+
 
 
 // import jsPDF from 'jspdf';
@@ -22,7 +22,6 @@ import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfMake from "html-to-pdfmake";
-
 
 import { Tooltip } from 'bootstrap';
 import data from '../../../../components/tooltip/tooltip'
@@ -191,6 +190,7 @@ const Veiculos = () => {
           const ul = document.getElementById('relat');
           const title = document.getElementById('titleRelat'); //estiliza o titulo do relatório
 
+
           // Remove bordas da tabela e das células da tabela
           ul.querySelectorAll('table, td, th').forEach(element => {
             element.style.border = 'none';
@@ -202,15 +202,6 @@ const Veiculos = () => {
           title.style.textAlign = 'center';
           title.style.marginBottom = '30px';
 
-          //esse código faz com que após clicar no botao de gerar cpf, volte a ter bordas normais na tabela
-
-          ul.querySelectorAll('tbody').forEach(element => {
-            element.style.borderBottom = '0.1px solid #ccc';
-          });
-          ul.querySelectorAll('tbody').forEach(element => {
-            element.style.borderTop = '0.1px solid #ccc';
-          });
-
           const pdfContent = htmlToPdfMake(ul.innerHTML, title.innerHTML);
 
           const docDefinition = {
@@ -221,80 +212,76 @@ const Veiculos = () => {
 
           pdfMake.createPdf(docDefinition).download(fileName);
 
+          
+
+
+};
+
+
         
 
-       
-};
-
-//Modal para abrir o histórico do veículo
-
-const [showModal, setShowModal] = useState(false);
-// const [selectedData, setSelectedData] = useState(null);
-
- //chama a função de histórico do veículo
- const [searchhistyPlaca, setSearchhistyPlaca ] = useState ({ trocaOleo: [] })
+         
 
 
-//teste de Modal
-
-// const [show, setShow] = useState(false);
-
-  // const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
-
-// Função para abrir o modal e passar os dados selecionados
-// const handleOpenModal = (data) => {
-//   setSelectedData(data);
-//   setShowModal(true);
-// }
-
-//  // Função para fechar o modal
-//  const handleCloseModal = () => {
-//   setSelectedData(null);
-//   setShowModal(false);
-// }
-
- const openModal = (codVeiculo) => {
-  setSearchhistyPlaca(codVeiculo);
-  buscarInformacoesVeiculo(codVeiculo);
-  setShowModal(true);
-  
-};
-
-const closeModal = () => {
-  setShowModal(false);
-};
-
-
-
-
- 
-// const handleHisty =  async (cod_veiculo) => {
-//   // cpfSearch.resultado.length > 0 && cpfSearch.resultado.map(async (cliente) => {
-//   //   const response = await fetch(`http://192.168.0.104:4000/servicoTrocaVencendo/${cliente.cod_veiculo}`);
-//   //   const data = await response.json();
-//   //   // faça algo com os dados retornados
-//   // })
-
-//   setSearchhistyPlaca(cod_veiculo);
-//   buscarInformacoesVeiculo(cod_veiculo);
-
-// }
-
-const buscarInformacoesVeiculo = async (cod_veiculo) =>{
-    const response = await fetch(`http://192.168.0.104:4000/servicoTrocaVencendo/${cod_veiculo}`);
-    const data = await response.json();
-    setSearchhistyPlaca(data);
-    console.log('teste', data);
-
-}
         
+
+         
+
+          // const input = document.getElementById('content');
+          // html2canvas(input, {
+          //   scale: 2,
+          //   useCORS: true,
+          //   scrollX: 0,
+          //   scrollY: -window.scrollY
+          // }).then((canvas) => {
+          //   const imgData = canvas.toDataURL('image/png');
+          //   const pdf = new jsPDF('p', 'mm', 'a4');
+          //   const imgProps = pdf.getImageProperties(imgData);
+          //   const pdfWidth = pdf.internal.pageSize.getWidth();
+          //   const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+          //   pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+          //   pdf.save('RelatorioVeiculosporCliente.pdf');
+          // });
+
+          // const input = document.getElementById('content');
+          // html2canvas(input)
+          //   .then((canvas) => {
+          //     const imgData = canvas.toDataURL('image/png');
+          //     const pdf = new jsPDF('p', 'pt', [950, 2000]);
+          //     pdf.addImage(imgData, 'PNG', 0, 0);
+          //     pdf.save("download.pdf");
+          //   });
+        
+        
+
+        // const gerarPDF = async () => {
+
+          // const doc = new jsPDF();
+
+
+          // doc.setFontSize(16); // define o tamanho padrão da fonte do documento
+          // doc.setFont('helvetica', 'normal'); // define a fonte padrão do documento
+          
+          // const element = document.getElementById('content');
+          // html2canvas(element).then(canvas => {
+          //   const imgData = canvas.toDataURL('image/png');
+          //   doc.addImage(imgData, 'PNG', 10, 20, 200, 350); // adiciona a imagem ao PDF
+          //   doc.save('relatorioVeiculosporClientes.pdf');
+          // });
+           
+           // Define as dimensões da página
+           
+            
+        // }
+
+     
 
 
     return (
 
+        
+
         <div>
-          
 
 <container-xl>
     <CRow className="justify-content-center">
@@ -302,9 +289,6 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
             <CCardBody>
                 <PageArea>
             <div className='searchArea'>
-
-
-            
                 
                     <form onSubmit={handleSubmit}>
                             {/* <input type='text'  className='inputSearch--1' 
@@ -388,7 +372,6 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
             <th>Tipo Veículo </th>
             <th>Fabricante Veículo </th>
             <th>Marca Veículo </th>
-            <th>Ações</th>
 
           </tr>
         </thead>
@@ -400,67 +383,19 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
             <td>{cliente.tipo_veiculo}</td>
             <td>{cliente.fabricante_veiculo}</td>
             <td>{cliente.modelo_veiculo}</td>
-            {/* <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)}> Histórico</Button></td> */}
-             <td><Button variant='success' onClick={() => openModal(cliente.cod_veiculo)}> Histórico</Button></td>
           </tr>
           
           
         </tbody>
             </Table>
 
+
       </div>
       
       
     )) }
 
-
-{/* {
-  searchhistyPlaca.trocaOleo.length > 0 && searchhistyPlaca.trocaOleo.map((infoVeiculo) => (
-
-  // searchhistyPlaca && searchhistyPlaca.trocaOleo.length > 0 && searchhistyPlaca.trocaOleo.map((infoVeiculo) => (    
-    
-    <div key={infoVeiculo.cod_veiculo}>
-      <div>{infoVeiculo.cod_veiculo} </div>
-      <div>{infoVeiculo.placa_veiculo} </div>
-      <div>{infoVeiculo.tipo_veiculo}</div>
-      <div>{infoVeiculo.marca_veiculo}</div>
-      <div>{infoVeiculo._veiculo}</div>
-
-    </div>
-    
-))} */}
-
-
-{/* 
-{searchhistyPlaca && 
-    
-    <div key={searchhistyPlaca.cod_veiculo}>
-      <div>{searchhistyPlaca.cod_veiculo} </div>
-      <div>{searchhistyPlaca.placa_veiculo} </div>
-      <div>{searchhistyPlaca.tipo_veiculo}</div>
-      <div>{searchhistyPlaca.marca_veiculo}</div>
-      <div>{searchhistyPlaca.modelo_veiculo}</div>
   
-    </div>
-}   */}
-
-  
-
-    
-
-
-
-{/* 
-{searchhistyPlaca.trocaOleo.servicos ? (
-  searchhistyPlaca.trocaOleo.servicos.map((infoVeiculo) => (
-    <div key={infoVeiculo.cod_servicos}>
-      <div>{infoVeiculo.km}</div>
-    </div>
-  ))
-) : (
-  <div>Nenhum histórico encontrado</div>
-)} */}
-
     
 </div>
 
@@ -472,72 +407,16 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
 }
 
 
-          
 
 
             </div>
-  
-            <Modal size="xl" show={showModal} onHide={closeModal}>
-
-    <div className='modalContent'>
-      <Modal.Header closeButton>
-        <Modal.Title>Histórico do Veículo</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-
-        {/* Aqui você pode exibir as informações do veículo */}
-        {searchhistyPlaca.trocaOleo ? (
-          searchhistyPlaca.trocaOleo.map((infoVeiculo) => (
-            <Table responsive="md">
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Sobrenome</th>
-                  <th>Placa </th>
-                  <th>Tipo Veículo </th>
-                  <th>Fabricante Veículo </th>
-                  <th>Marca Veículo </th>
-                  <th>Data de Troca</th>
-                  <th>Próxima de Troca</th>
-                  
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{infoVeiculo.cliente.nome_cliente}</td>
-                  <td>{infoVeiculo.cliente.sobrenome_cliente}</td>
-                  <td>{infoVeiculo.placa_veiculo}</td>
-                  <td>{infoVeiculo.tipo_veiculo}</td>
-                  <td>{infoVeiculo.fabricante_veiculo}</td>
-                  <td>{infoVeiculo.modelo_veiculo}</td>
-                  <td>{infoVeiculo.servicos[0].data_troca}</td>
-                  <td>{infoVeiculo.servicos[0].proxima_troca}</td>
-                </tr>
-              </tbody>
-            </Table>
-          ))
-        ) : (
-          <div>Nenhum histórico encontrado</div>
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={closeModal}>
-          Fechar
-        </Button>
-      </Modal.Footer>
-    </div>
-  {/* </div> */}
-</Modal>
-
 
             </PageArea>
         </CCardBody>
        </CCard>
   </CRow>
 </container-xl>
-
         </div>
-        
     )
 }
 
