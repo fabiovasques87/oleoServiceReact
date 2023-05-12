@@ -4,9 +4,9 @@ import { Tooltip } from 'bootstrap';
 
 
    const data = {
-      titleCpf: 'Insira o CPF do proprietário e logo após pressione a tecla de espaço',
-      titleTrocaOleo: 'para realizar a troca de óleo, Favor inserir a placa do veículo e logo após clicar fora do campo! ',
-      titleHistorico: 'Para consultar histórico do veículo favor inserir a placa '
+      titleCpf: 'Aqui é possível consultar os veiculos vinculados a seu cpf como também consultar seu histórico',
+      titleTrocaOleo: 'Para consultar histórico do veículo favor inserir a placa ',
+      // titleHistorico: 'Para consultar histórico do veículo favor inserir a placa '
    };
 
 

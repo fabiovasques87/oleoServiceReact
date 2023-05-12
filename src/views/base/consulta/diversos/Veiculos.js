@@ -8,7 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { renderToStaticMarkup } from 'react-dom/server';
 import logo from '../../../../assets/images/logo.png';
-
+import debounce from 'lodash.debounce';
 
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
@@ -163,19 +163,7 @@ const Veiculos = () => {
              };
         },[]);
     
-         //Tooltip para histórico do veículo
-    
-         const placaHistoricoVeiculo = React.useRef(null);
-    
-         React.useEffect(()=>{
-             const tooltip =  new Tooltip(placaHistoricoVeiculo.current, {
-                 title: `${data.titleHistorico}` //busca os dados do objeto do componente data
-              });
-     
-              return () =>{
-                 tooltip.dispose();
-              };
-         },[]);
+        
 
       
 
@@ -238,7 +226,7 @@ const  exportPDFHisty =  () =>{
   //Funciona
   // Seleciona a div que contém o conteúdo a ser convertido para PDF
   const ul = document.getElementById('relatHistyModal');
-  // const title = document.getElementById('titleRelat'); //estiliza o titulo do relatório
+  const title = document.getElementById('titleHisty'); //estiliza o titulo do relatório
 
   // Remove bordas da tabela e das células da tabela
   ul.querySelectorAll('table, td, th').forEach(element => {
@@ -246,10 +234,10 @@ const  exportPDFHisty =  () =>{
   });
             
   //estiliza o titulo do relatório
-  // title.style.fontSize = '22pt';
-  // title.style.fontWeight = 'bold';
-  // title.style.textAlign = 'center';
-  // title.style.marginBottom = '30px';
+   title.style.fontSize = '22pt';
+   title.style.fontWeight = 'bold';
+   title.style.textAlign = 'center';
+   title.style.marginBottom = '30px';
 
   //esse código faz com que após clicar no botao de gerar cpf, volte a ter bordas normais na tabela
 
@@ -260,7 +248,7 @@ const  exportPDFHisty =  () =>{
     element.style.borderTop = '0.1px solid #ccc';
   });
 
-  const pdfContent = htmlToPdfMake(ul.innerHTML);
+  const pdfContent = htmlToPdfMake(ul.innerHTML, title.innerHTML);
 
   const docDefinition = {
     content: pdfContent,pageOrientation: 'landscape'
@@ -331,8 +319,8 @@ const closeModal = () => {
 
 // }
 
-const buscarInformacoesVeiculo = async (cod_veiculo) =>{
-    const response = await fetch(`http://192.168.0.104:4000/servicoTrocaVencendo/${cod_veiculo}`);
+const buscarInformacoesVeiculo = async (placa_veiculo) =>{
+    const response = await fetch(`http://192.168.0.104:4000/servicoTrocaVencendo/${placa_veiculo}`);
     const data = await response.json();
     if (!data) {
       console.error('A resposta da API não contém a chave "resultado".');
@@ -350,8 +338,64 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
   
 
 }
-        
+     
 
+//função search histy placa:
+
+
+//state para guardar o valor do campo de pesquisa da placa:
+const [valorSearchplaca, setvalorSearchplaca] = useState('');
+
+
+
+//state para guardar a placa que vem da api
+const [searchPlaca, setsearchPlaca] = useState({ resultado: [] });
+
+const handleSearchplaca = async (event) => {
+  const newValue = event.target.value;
+  setvalorSearchplaca(newValue);
+  ApiSearchPlaca(newValue); 
+
+  //função que atualiza a página caso os dois capos estejam preenchidos ao mesmo tempo
+
+  const inputSearchPlaca = document.getElementById('searchPlaca');
+  const cpfCnpj = document.getElementById('cpf_cnpj');
+
+  const campoSearchPlacaHisty = inputSearchPlaca.value;
+  const campoCpfCnpj = cpfCnpj.value;
+
+  if(campoSearchPlacaHisty !== "" && campoCpfCnpj !== ""){
+    alert('Favor preencher um campo de cada vez!');
+    location.reload()
+  }
+
+ 
+    
+}
+
+//criacao do modal para exibir caso os dois campos estejam preenchidos:
+
+const [modalwarning, setModalwarning] = useState(false);
+
+
+
+const ApiSearchPlaca = async (valorSearch) => {
+  const response = await fetch(`http://192.168.0.104:4000/servicoTrocaVencendo/${valorSearch}`);
+  const data = await response.json();
+
+  if (!data) {
+    console.error('A resposta da API não contém a chave "resultado".');
+    return;
+  }
+
+  try {
+    const resultado = JSON.parse(data.resultado);
+    setsearchPlaca({ resultado });
+  } catch (e) {
+    console.error('Erro ao analisar a string JSON:', e.message);
+    setsearchPlaca({ resultado: [] });
+  }
+}
 
     return (
 
@@ -389,15 +433,18 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
                         
                     
                         <input type='text'  className='inputSearch--2'
+                            id='searchPlaca'
                             placeholder='Insira a placa'
+                            onChange={handleSearchplaca}
+                            value={valorSearchplaca}
                             ref={placaTrocaOleo}
                         /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
+
+
                     
-                        <input type='text'  className='inputSearch--3'
-                            placeholder='Insira a placa'
-                            ref={placaHistoricoVeiculo}
-                        /> <CIcon icon={icon.cilMagnifyingGlass} size='xl'/>
                     </form>
+
+
             </div>
 
 
@@ -450,7 +497,7 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
             <th>Tipo Veículo </th>
             <th>Fabricante Veículo </th>
             <th>Marca Veículo </th>
-            <th colSpan={2}  style={{textAlign:'center'}}>Ações</th>
+            <th colSpan={3}  style={{textAlign:'center'}}>Ações</th>
 
           </tr>
         </thead>
@@ -463,8 +510,9 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
             <td>{cliente.fabricante_veiculo}</td>
             <td>{cliente.modelo_veiculo}</td>
             {/* <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)}> Histórico</Button></td> */}
-             <td><Button variant='success' onClick={() => openModal(cliente.cod_veiculo)}> Histórico</Button></td>
-              <td><Button className='bootEditar' variant='primary'>Editar</Button></td>
+             <td><Button variant='success' onClick={() => openModal(cliente.placa_veiculo)} style={{padding:'10px'}}> Histórico</Button></td>
+              <td><Button className='bootEditar' variant='primary' style={{padding:'10px'}}>Editar</Button></td>
+              <td> <Button variant="warning"  style={{padding:'10px'}}> Trocar óleo </Button></td>
           </tr>
           
           
@@ -531,7 +579,7 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
     {/* {Só mostrará o botão se encontrar resultados para exibir...} */}
 
 {cpfSearch.resultado.length > 0 &&
-          <Button className='button'  variant="success" onClick={exportPDF}>Gerar PDF</Button>
+          <Button className='button'  variant="success" onClick={exportPDF} style={{padding:'10px'}}>Gerar PDF</Button>
 }
 
 
@@ -544,13 +592,14 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
 
     <div className='modalContent'>
       <Modal.Header closeButton>
-        <Modal.Title>Histórico do Veículo</Modal.Title>
+        {/* <Modal.Title>Histórico do Veículo</Modal.Title> */}
       </Modal.Header>
       <Modal.Body>
 
         {/* Aqui você pode exibir as informações do veículo */}
 
         <div id='relatHistyModal'>
+        <h3 id='titleHisty'>Histórico do Veículo</h3>
 
         {searchhistyPlaca.resultado ? (
           searchhistyPlaca.resultado.map((infoVeiculo) => (
@@ -564,13 +613,13 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
                   <th>KM</th>
                   <th>Tipo óleo</th>
                   <th>Filtro óleo</th>
-                  <th>Troca Filtro óleo?</th>
+                  <th>Filtro óleo?</th>
                   <th>Filro Combustível</th>
-                  <th>Troca Filtro combustível?</th>
+                  <th>Filtro combustível?</th>
                   <th>Filtro Cabine</th>
-                  <th>Trocado filtro cabine?</th>
+                  <th>Filtro cabine?</th>
                   <th>Filtro ar</th>
-                  <th>Troca filtro ar?</th>
+                  <th>Filtro ar?</th>
                   <th>OBS</th>
                   <th>quantidade óleo</th>
                   
@@ -613,11 +662,66 @@ const buscarInformacoesVeiculo = async (cod_veiculo) =>{
         </Button>
         <Button variant="secondary" onClick={exportPDFHisty} style={{padding:'10px'}}>
           Gerar Relatório
-        </Button>
+        </Button>       
       </Modal.Footer>
     </div>
   {/* </div> */}
 </Modal>
+
+
+{/* renderiza resultado da search placa */}
+
+{searchPlaca.resultado.length > 0  &&
+
+<h4 className='titleRelat'>Histórico de servicos</h4>
+
+}
+
+
+
+{searchPlaca.resultado.length > 0 &&  searchPlaca.resultado.map((cliente) => (
+    <div key={cliente.cod_veiculo}>
+
+
+<Table responsive="sm">
+        <thead>
+          <tr>
+            <th>Nome</th>
+            <th>Sobrenome</th>
+            <th>CPF</th>
+            <th>Placa </th>
+            <th>Tipo Veículo </th>
+            <th>Fabricante Veículo </th>
+            <th>Marca Veículo </th>
+            <th colSpan={3}  style={{textAlign:'center'}}>Ações</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{cliente.nome_cliente}</td>
+            <td>{cliente.sobrenome_cliente}</td>
+            <td>{cliente.cpf_cliente}</td>
+            <td>{cliente.placa_veiculo}</td>
+            <td>{cliente.tipo_veiculo}</td>
+            <td>{cliente.fabricante_veiculo}</td>
+            <td>{cliente.modelo_veiculo}</td>
+            <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)} style={{padding:'10px'}}>Mais detalhes</Button></td>
+             {/* <td><Button variant='success' onClick={() => openModal(cliente.placa_veiculo)} style={{padding:'10px'}}> Mais detalhes</Button></td> */}
+              <td> <Button variant="warning"  style={{padding:'10px'}}> Trocar óleo </Button></td>
+          </tr>
+          
+          
+        </tbody>
+            </Table>
+
+
+      </div>
+
+
+
+))}
+
 
 
 

@@ -11,11 +11,15 @@ export const  PageArea  = styled.div`
         width: 100%;
         display: flex;
         
-      
+            // form{
+            //     display: flex;
+            //     justify-content: center;
+            //     align-items: center;
+            // }
 
 
             .inputSearch--1, .inputSearch--2,.inputSearch--3{
-                width: 380px;
+                width: 530px;
                 margin-bottom: 20px;
                 padding: 10px;
                 outline: 0;
@@ -78,7 +82,7 @@ export const  PageArea  = styled.div`
             
 
 
-                .inputSearch--1, .inputSearch--2, .inputSearch--3 {
+                .inputSearch--1, .inputSearch--2 {
                     width:98%;
                     margin-left:0;
                 }
