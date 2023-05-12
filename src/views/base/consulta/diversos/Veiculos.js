@@ -677,8 +677,6 @@ const ApiSearchPlaca = async (valorSearch) => {
 
 }
 
-
-
 {searchPlaca.resultado.length > 0 &&  searchPlaca.resultado.map((cliente) => (
     <div key={cliente.cod_veiculo}>
 
@@ -706,18 +704,16 @@ const ApiSearchPlaca = async (valorSearch) => {
             <td>{cliente.tipo_veiculo}</td>
             <td>{cliente.fabricante_veiculo}</td>
             <td>{cliente.modelo_veiculo}</td>
-            <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)} style={{padding:'10px'}}>Mais detalhes</Button></td>
-             {/* <td><Button variant='success' onClick={() => openModal(cliente.placa_veiculo)} style={{padding:'10px'}}> Mais detalhes</Button></td> */}
+            {/* <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)}> Histórico</Button></td> */}
+             <td><Button variant='success' onClick={() => openModal(cliente.placa_veiculo)} style={{padding:'10px'}}> Mais detalhes</Button></td>
+              <td><Button className='bootEditar' variant='primary' style={{padding:'10px'}}>Editar</Button></td>
               <td> <Button variant="warning"  style={{padding:'10px'}}> Trocar óleo </Button></td>
           </tr>
           
           
         </tbody>
             </Table>
-
-
       </div>
-
 
 
 ))}
