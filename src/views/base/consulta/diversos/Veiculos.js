@@ -9,6 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import { renderToStaticMarkup } from 'react-dom/server';
 import logo from '../../../../assets/images/logo.png';
 import debounce from 'lodash.debounce';
+import Form from 'react-bootstrap/Form';
 
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
@@ -23,6 +24,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 import htmlToPdfMake from "html-to-pdfmake";
 import moment from "moment";
+
 
 import { Tooltip } from 'bootstrap';
 import data from '../../../../components/tooltip/tooltip'
@@ -170,7 +172,7 @@ const Veiculos = () => {
         // Função para gerar o PDF do relatorio veiculos por clientes
 
         
-        const  exportPDF =  () =>{
+        const  exportPDFGeral =  () =>{
 
          
 
@@ -178,17 +180,37 @@ const Veiculos = () => {
           // Seleciona a div que contém o conteúdo a ser convertido para PDF
           const ul = document.getElementById('relat');
           const title = document.getElementById('titleRelat'); //estiliza o titulo do relatório
+          // const boot = document.getElementById('bootNone');
+          // const thBoot = document.querySelector('.thBoot');
+
+        // boot2.querySelectorAll('.bootEditar').forEach(element => {
+        //   element.style.display= 'none';
+        // });
+
+        // boot.querySelectorAll('bootNone').forEach(element => {
+        //   element.style.display= 'none';
+        // });
+
+
 
           // Remove bordas da tabela e das células da tabela
-          ul.querySelectorAll('table, td, th').forEach(element => {
+          ul.querySelectorAll('table, td, th',).forEach(element => {
             element.style.border = 'none';
           });
+
+          //remove botão
+
+          // thBoot.style.display = 'none';
+          // boot.style.display = 'none';
+
                     
           //estiliza o titulo do relatório
           title.style.fontSize = '22pt';
           title.style.fontWeight = 'bold';
           title.style.textAlign = 'center';
           title.style.marginBottom = '30px';
+
+
 
           //esse código faz com que após clicar no botao de gerar cpf, volte a ter bordas normais na tabela
 
@@ -198,6 +220,9 @@ const Veiculos = () => {
           ul.querySelectorAll('tbody').forEach(element => {
             element.style.borderTop = '0.1px solid #ccc';
           });
+
+
+
 
           const pdfContent = htmlToPdfMake(ul.innerHTML, title.innerHTML);
 
@@ -209,7 +234,9 @@ const Veiculos = () => {
 
           pdfMake.createPdf(docDefinition).download(fileName);
 
-        
+          //add botão
+          // thBoot.style.display = 'block';
+          // boot.style.display = 'block';
 
        
 };
@@ -226,12 +253,13 @@ const  exportPDFHisty =  () =>{
   //Funciona
   // Seleciona a div que contém o conteúdo a ser convertido para PDF
   const ul = document.getElementById('relatHistyModal');
-  const title = document.getElementById('titleHisty'); //estiliza o titulo do relatório
+  const title = document.getElementById('titleHisty'); //estiliza o titulo do relatório 
 
   // Remove bordas da tabela e das células da tabela
   ul.querySelectorAll('table, td, th').forEach(element => {
     element.style.border = 'none';
   });
+
             
   //estiliza o titulo do relatório
    title.style.fontSize = '22pt';
@@ -380,7 +408,7 @@ const [modalwarning, setModalwarning] = useState(false);
 
 
 const ApiSearchPlaca = async (valorSearch) => {
-  const response = await fetch(`http://192.168.0.104:4000/servicoTrocaVencendo/${valorSearch}`);
+  const response = await fetch(`http://192.168.0.104:4000/clientVeiculo/${valorSearch}`);
   const data = await response.json();
 
   if (!data) {
@@ -396,6 +424,72 @@ const ApiSearchPlaca = async (valorSearch) => {
     setsearchPlaca({ resultado: [] });
   }
 }
+
+
+//Exibir Modal de edição entre cliente e seu veículos
+
+const [showModalEditar, setShowModalEditar] = useState(false);
+
+
+const openModalEditar = (codVeiculo) => {
+  // setSearchhistyPlaca(codVeiculo);
+  // informacoesApiVeicuClient(codVeiculo);
+  // setSearchhistyPlaca(codVeiculo);
+  // buscarInformacoesVeiculo(codVeiculo);
+  // ApiSearchPlaca()
+  informacoesApiVeicuClient(codVeiculo)
+  setShowModalEditar(true);
+  
+};
+
+
+const closeModalEditar = () => {
+  setShowModalEditar(false);
+};
+
+const informacoesApiVeicuClient = async (placa_veiculo) => {
+  const response = await fetch(`http://192.168.0.104:4000/clientVeiculo/${placa_veiculo}`);
+  const data = await response.json();
+
+  if (!data) {
+    console.error('A resposta da API não contém a chave "resultado".');
+    return;
+  }
+
+  try {
+    const resultado = JSON.parse(data.resultado);
+    setsearchPlaca({ resultado });
+    // console.log('valores', searchPlaca)
+
+  } catch (e) {
+    console.error('Erro ao analisar a string JSON:', e.message);
+    setsearchPlaca({ resultado: [] });
+  }
+}
+
+
+
+// const informacoesApiVeicuClient = async (cpf_cliente) => {
+//   const response = await fetch(`http://192.168.0.104:4000/trocaCpf/${cpf_cliente}`);
+//   // const response = await fetch(`http://localhost:4000/trocaCpf/${valor}`);
+//   const data = await response.json();
+
+//   if (!data) {
+//     console.error('A resposta da API não contém a chave "resultado".');
+//     return;
+//   }
+  
+//   try {
+//     const resultado = JSON.parse(data.resultado);
+//     setCpfSearch({ resultado });
+//   } catch (e) {
+//     console.error('Erro ao analisar a string JSON:', e.message);
+//     setCpfSearch({ resultado: [] });
+    
+//   }
+// };  
+
+
 
     return (
 
@@ -510,9 +604,9 @@ const ApiSearchPlaca = async (valorSearch) => {
             <td>{cliente.fabricante_veiculo}</td>
             <td>{cliente.modelo_veiculo}</td>
             {/* <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)}> Histórico</Button></td> */}
-             <td><Button variant='success' onClick={() => openModal(cliente.placa_veiculo)} style={{padding:'10px'}}> Histórico</Button></td>
-              <td><Button className='bootEditar' variant='primary' style={{padding:'10px'}}>Editar</Button></td>
-              <td> <Button variant="warning"  style={{padding:'10px'}}> Trocar óleo </Button></td>
+             <td className='thBoot'><Button variant='success' className='bootEditar' onClick={() => openModal(cliente.placa_veiculo)} > Histórico</Button></td>
+              <td className='thBoot'><Button className='bootEditar' variant='primary' onClick={()=>openModalEditar(cliente.placa_veiculo)} >Editar</Button></td>
+              <td className='thBoot'> <Button variant="warning" className='bootEditar' > Trocar óleo </Button></td>
           </tr>
           
           
@@ -579,7 +673,7 @@ const ApiSearchPlaca = async (valorSearch) => {
     {/* {Só mostrará o botão se encontrar resultados para exibir...} */}
 
 {cpfSearch.resultado.length > 0 &&
-          <Button className='button'  variant="success" onClick={exportPDF} style={{padding:'10px'}}>Gerar PDF</Button>
+          <Button className='button'  variant="success" onClick={exportPDFGeral} style={{padding:'10px'}}>Gerar PDF</Button>
 }
 
 
@@ -705,9 +799,9 @@ const ApiSearchPlaca = async (valorSearch) => {
             <td>{cliente.fabricante_veiculo}</td>
             <td>{cliente.modelo_veiculo}</td>
             {/* <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)}> Histórico</Button></td> */}
-             <td><Button variant='success' onClick={() => openModal(cliente.placa_veiculo)} style={{padding:'10px'}}> Mais detalhes</Button></td>
-              <td><Button className='bootEditar' variant='primary' style={{padding:'10px'}}>Editar</Button></td>
-              <td> <Button variant="warning"  style={{padding:'10px'}}> Trocar óleo </Button></td>
+             <td><Button variant='success' id='bootNone' onClick={() => openModal(cliente.placa_veiculo)} style={{padding:'10px'}}> Mais detalhes</Button></td>
+              {/* <td><Button className='bootEditar' variant='primary' style={{padding:'10px'}}>Editar</Button></td> */}
+              <td> <Button variant="warning" id='bootNone' style={{padding:'10px'}}> Trocar óleo </Button></td>
           </tr>
           
           
@@ -717,6 +811,115 @@ const ApiSearchPlaca = async (valorSearch) => {
 
 
 ))}
+
+
+{/*Exibir informações do modal de edição ente clientes e seus veículos  */}
+
+<Modal size="xl" show={showModalEditar} onHide={closeModalEditar}>
+
+    <div className='modalContent'>
+      <Modal.Header closeButton>
+        {/* <Modal.Title>Histórico do Veículo</Modal.Title> */}
+      </Modal.Header>
+      <Modal.Body>
+
+        {/* Aqui você pode exibir as informações do veículo */}
+
+        <div id='relatHistyModal'>
+        <h3 id='titleHisty' style={{marginBottom: '20px', textAlign: 'center'}}>Editar veículo do cliente</h3>
+
+        {searchPlaca.resultado ? (
+          searchPlaca.resultado.map((cliente) => ( 
+            
+            <div className='formEditCliente' > 
+
+              <form>
+                <div class="row">
+                  <div class="form-group col-md-6 mb-2">
+                      <input type="text" class="form-control" value={cliente.nome_cliente} disabled />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <input type="text" class="form-control" value={cliente.sobrenome_cliente} disabled />
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6 mt-2">
+                      <input type="text" class="form-control" value={cliente.tipo_veiculo} disabled />
+                    </div>
+                    <div class="form-group col-md-6 mt-2">
+                      <input type="text" class="form-control" value={cliente.fabricante_veiculo} disabled/>
+                    </div>                    
+                </div>
+ 
+                <div class="row">
+                  <div class="form-group col-md-6 mt-2">
+                      <input type="text" class="form-control" value={cliente.modelo_veiculo} disabled />
+                    </div>
+                    <div class="form-group col-md-6 mt-2">
+                      <input type="text" class="form-control" value={cliente.placa_veiculo} disabled />
+                    </div>                    
+                </div>
+
+                <div class= "row">
+                    <div class="form-group col-md-6 mt-2">
+                      <label for="inputEstado">Novo proprietário</label>
+                      <input type="text" class="form-control" placeholder='Insira o CPF' />
+                    </div>
+                    <div class="form-group col-md-6 mt-2">
+                      <label for="inputEstado">Nome novo proprietário</label>
+                      <select id="inputEstado" class="form-control">
+                          <option selected>Escolher...</option>
+                          <option>...</option>
+                        </select>
+                    </div>
+                </div>
+
+                
+              </form>
+
+
+            {/* <Table className='tableHisty' style={{fontSize: '14px'}}>
+              <thead>
+                <tr>
+                <th>Nome</th>
+                <th>Sobrenome</th>
+                <th>Placa </th>
+                <th>Tipo Veículo </th>
+                <th>Fabricante Veículo </th>
+                <th>Marca Veículo </th>                  
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                <td>{cliente.sobrenome_cliente}</td>
+                <td>{cliente.placa_veiculo}</td>
+                <td>{cliente.tipo_veiculo}</td>
+                <td>{cliente.fabricante_veiculo}</td>
+                <td>{cliente.modelo_veiculo}</td>
+                </tr>
+              </tbody>
+            </Table> */}
+            </div>
+          ))
+        ) : (
+          <div>Nenhum histórico encontrado</div>
+        )}
+    </div>
+
+
+
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={closeModalEditar
+        } style={{padding:'10px', width:'120px'}}>
+          Fechar
+        </Button>      
+      </Modal.Footer>
+    </div>
+  {/* </div> */}
+</Modal>
 
 
 

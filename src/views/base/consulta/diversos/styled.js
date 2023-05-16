@@ -73,7 +73,16 @@ export const  PageArea  = styled.div`
 
     .bootEditar{
         width: 105px;
+        padding: 10px;
     }
+
+    .formEditCliente{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: red;
+    }
+    
 
     @media(max-width: 600px){
 
@@ -89,7 +98,7 @@ export const  PageArea  = styled.div`
 
                 .titleRelat{
                     font-size: 10px;
-                }
+                }                
                 .button{
                     width: 100%;
                     margin-top:20px;
