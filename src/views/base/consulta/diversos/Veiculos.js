@@ -55,7 +55,7 @@ const Veiculos = () => {
     const [cpfNotFound, setCpfNotFound] = useState(false);
 
 
-    const handleInputChange = async (event) => {
+    const handleInputCpfChange = async (event) => {
         const newValue = event.target.value;
         setValor(newValue);
         handleChangeMask(event);
@@ -489,6 +489,95 @@ const informacoesApiVeicuClient = async (placa_veiculo) => {
 //   }
 // };  
 
+// captura o cpf do cliente e exibe no campo ao lado para editar veiculo do cliente
+
+
+ const [updateCpfCliente, setUpdateCpfCliente] = useState([{ resultado: []}]);
+
+ const [cpf, setCpf] = useState(''); // Estado para o valor digitado no campo CPF
+
+const [nomeCliente, setNomeCliente] = useState('');
+
+const handleUpdateCpf = (event) => {
+  const newValue = event.target.value;
+  setCpf(newValue); //salva na state cpf para usar a mascara
+  handleChangeMaskUpdateCpfVeicul(event); //chama a função de mascara
+  handleUpdateCpfApi(newValue);
+}
+
+//Função de mascara
+
+const handleChangeMaskUpdateCpfVeicul =  async (event) =>{
+  const { value } = event.target;
+  setCpf(mask(value));
+  handleUpdateCpfApi()
+}
+
+const handleUpdateCpfApi = async (cpf) => {
+  const response = await fetch(`http://192.168.0.104:4000/clientVeiculoCpf/${cpf}`);
+  const data = await response.json();
+
+  if (!data) {
+    console.error('A resposta da API não contém a chave "resultado".');
+    return;
+  }
+
+  try {
+    const resultado = JSON.parse(data.resultado);
+    setUpdateCpfCliente({ resultado });
+
+    if (resultado.length > 0) {
+      setNomeCliente(resultado[0].nome_cliente); // Define o nome do cliente retornado no estado nomeCliente
+    }
+
+  } catch (e) {
+    console.error('Erro ao analisar a string JSON:', e.message);
+    setUpdateCpfCliente({ resultado: [] });
+  }
+};
+
+useEffect(() => {
+  console.log('Dados de cpf:', updateCpfCliente);
+}, [updateCpfCliente]);
+
+// const [updateCpfCliente, setUpdateCpfCliente] = useState([{ resultado: []}]);
+
+// const [cpf, setCpf] = useState(''); // Estado para o valor digitado no campo CPF
+
+// const handleUpdateCpf = (event) => {
+//   const newValue = event.target.value;
+//   setCpf(newValue);
+//   handleUpdateCpfApi(newValue); // Passa o valor digitado para a função de chamada da API
+// }
+
+// const handleUpdateCpfApi = async (cpf) => {
+//   const response = await fetch(`http://192.168.0.104:4000/clientVeiculoCpf/${cpf}`);
+//   const data = await response.json();
+      
+//   if (!data) {
+//     console.error('A resposta da API não contém a chave "resultado".');
+//     return;
+//   }
+
+//   try {
+//     const resultado = JSON.parse(data.resultado);
+//     setUpdateCpfCliente({ resultado });
+//     console.log('Valor do estado updateCpfCliente:', updateCpfCliente);
+
+//   } catch (e) {
+//     console.error('Erro ao analisar a string JSON:', e.message);
+//     setUpdateCpfCliente({ resultado: [] });
+    
+//   }
+  
+// };
+
+// useEffect(() => {
+//   console.log('dados de cpf', updateCpfCliente);
+// }, [updateCpfCliente]);
+
+
+
 
 
     return (
@@ -517,7 +606,7 @@ const informacoesApiVeicuClient = async (placa_veiculo) => {
                                 placeholder='Insira o CPF do proprietário'
                                 name='cpf_cnpj' id="cpf_cnpj" 
                                 // onBlur={handleSubmit}  value={valor}
-                                onChange={handleInputChange}
+                                onChange={handleInputCpfChange}
                                 value={valor}
                                 ref={cpfProp}  
                                                           
@@ -865,42 +954,17 @@ const informacoesApiVeicuClient = async (placa_veiculo) => {
                 <div class= "row">
                     <div class="form-group col-md-6 mt-2">
                       <label for="inputEstado">Novo proprietário</label>
-                      <input type="text" class="form-control" placeholder='Insira o CPF' />
+                      <input type="text" class="form-control" placeholder='Insira o CPF/CNPJ' onChange={handleUpdateCpf} value={cpf} />
                     </div>
                     <div class="form-group col-md-6 mt-2">
                       <label for="inputEstado">Nome novo proprietário</label>
-                      <select id="inputEstado" class="form-control">
-                          <option selected>Escolher...</option>
-                          <option>...</option>
-                        </select>
+                      <input type="text" class="form-control"  value={nomeCliente} readOnly />
                     </div>
                 </div>
 
                 
               </form>
 
-
-            {/* <Table className='tableHisty' style={{fontSize: '14px'}}>
-              <thead>
-                <tr>
-                <th>Nome</th>
-                <th>Sobrenome</th>
-                <th>Placa </th>
-                <th>Tipo Veículo </th>
-                <th>Fabricante Veículo </th>
-                <th>Marca Veículo </th>                  
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                <td>{cliente.sobrenome_cliente}</td>
-                <td>{cliente.placa_veiculo}</td>
-                <td>{cliente.tipo_veiculo}</td>
-                <td>{cliente.fabricante_veiculo}</td>
-                <td>{cliente.modelo_veiculo}</td>
-                </tr>
-              </tbody>
-            </Table> */}
             </div>
           ))
         ) : (
