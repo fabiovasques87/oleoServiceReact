@@ -10,6 +10,11 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import logo from '../../../../assets/images/logo.png';
 import debounce from 'lodash.debounce';
 import Form from 'react-bootstrap/Form';
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
+
+
+
 
 // import jsPDF from 'jspdf';
 // import html2canvas from 'html2canvas';
@@ -630,9 +635,15 @@ const handleSubmitUpdateClientVeiculo = async (event) => {
     // Verificar a resposta da API
     if (response.ok) {
       // Dados enviados com sucesso
-      console.log('Dados enviados com sucesso!');
+      const responseData = await response.json();
+      setMessage(responseData.message);
+      setShowModalEditveicClient(true);
+      console.log('Dados enviados com sucesso!', responseData);
     } else {
       // Lidar com erros de resposta da API
+      const errorResponseData = await response.json();
+      setMessage(errorResponseData.error);
+      setShowModalEditveicClient(true);
       console.error('Erro ao enviar os dados para a API:', response.status);
     }
   } catch (error) {
@@ -642,7 +653,40 @@ const handleSubmitUpdateClientVeiculo = async (event) => {
 }
 
 
+//controlar modal de exibicao de mensagem de edicao de veiculo
 
+
+const [showModalEditveicClient, setShowModalEditveicClient] = useState(false);
+const [message, setMessage] = useState('');
+
+//fechar modal
+
+const closeModalEditVeicClient = () => {
+  setShowModalEditveicClient(false);
+  // setShowModalEditar(false); //fechao modal editar que está atras do atual
+
+};
+
+//Toast
+
+
+const abrirToast = () =>{
+  setShowModalEditveicClient(true);
+}
+
+
+useEffect(() => {
+  if (showModalEditveicClient) {
+    // Define o tempo em milissegundos para exibir o Toast por 6 segundos
+    const timeout = setTimeout(() => {
+      setShowModalEditveicClient(false);
+    }, 6000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }
+}, [showModalEditveicClient]);
 
 
     return (
@@ -1058,6 +1102,17 @@ const handleSubmitUpdateClientVeiculo = async (event) => {
         )}
     </div>
 
+      {/*Exibicao do Toast com mensagem de retorno */}
+
+      <Toast show={showModalEditveicClient} onClose={() => closeModalEditVeicClient()} style={{position: 'absolute', top: '0'}}>
+        <Toast.Header>
+          <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" />
+          <strong className="me-auto">Editar veículos do cliente</strong>
+          <small></small>
+        </Toast.Header>
+        <Toast.Body><p style={{fontSize: '20px',  textAlign: 'center', fontWeight:'bold'}}>{message}</p>
+        </Toast.Body>
+      </Toast>
 
 
       </Modal.Body>
@@ -1069,6 +1124,38 @@ const handleSubmitUpdateClientVeiculo = async (event) => {
     </div>
   {/* </div> */}
 </Modal>
+
+{/* Modal para mesagens do editar veiculo do cliente */}
+
+{/* 
+
+<Modal size="xl" show={showModalEditveicClient} onHide={closeModalEditVeicClient}>
+<div className='modalContent'>
+      <Modal.Header closeButton>
+        {/* <Modal.Title>Histórico do Veículo</Modal.Title> 
+      </Modal.Header>
+      <Modal.Body>
+
+<p style={{fontSize: '30px', textAlign: 'center'}}>{message}</p>
+
+
+ </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={closeModalEditVeicClient} style={{padding:'10px', width:'120px'}}>
+          Fechar
+        </Button>
+      </Modal.Footer>
+    </div>
+</Modal>
+
+*/}
+
+{/* <div show={showModalEditveicClient} style={{background: 'red'}}> 
+  {message}
+</div> */}
+
+
+
 
 
 
