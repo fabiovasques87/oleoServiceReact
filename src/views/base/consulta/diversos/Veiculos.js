@@ -468,27 +468,6 @@ const informacoesApiVeicuClient = async (placa_veiculo) => {
 }
 
 
-
-// const informacoesApiVeicuClient = async (cpf_cliente) => {
-//   const response = await fetch(`http://192.168.0.104:4000/trocaCpf/${cpf_cliente}`);
-//   // const response = await fetch(`http://localhost:4000/trocaCpf/${valor}`);
-//   const data = await response.json();
-
-//   if (!data) {
-//     console.error('A resposta da API não contém a chave "resultado".');
-//     return;
-//   }
-  
-//   try {
-//     const resultado = JSON.parse(data.resultado);
-//     setCpfSearch({ resultado });
-//   } catch (e) {
-//     console.error('Erro ao analisar a string JSON:', e.message);
-//     setCpfSearch({ resultado: [] });
-    
-//   }
-// };  
-
 // captura o cpf do cliente e exibe no campo ao lado para editar veiculo do cliente
 
 
@@ -497,6 +476,7 @@ const informacoesApiVeicuClient = async (placa_veiculo) => {
  const [cpf, setCpf] = useState(''); // Estado para o valor digitado no campo CPF
 
 const [nomeCliente, setNomeCliente] = useState('');
+const [codcliente, setCodcliente] = useState('');
 
 const handleUpdateCpf = (event) => {
   const newValue = event.target.value;
@@ -528,6 +508,9 @@ const handleUpdateCpfApi = async (cpf) => {
 
     if (resultado.length > 0) {
       setNomeCliente(resultado[0].nome_cliente); // Define o nome do cliente retornado no estado nomeCliente
+    }
+    if (resultado.length > 0) {
+      setCodcliente(resultado[0].codcliente); // Define o nome do cliente retornado no estado nomeCliente
     }
 
   } catch (e) {
@@ -575,6 +558,88 @@ useEffect(() => {
 // useEffect(() => {
 //   console.log('dados de cpf', updateCpfCliente);
 // }, [updateCpfCliente]);
+
+//trata do update do veiculo do cliente
+
+//mapea os values dos imputs
+
+const [formValuesUpdateVeicClient, setFormValuesUpdateVeicClient] = useState(null);
+
+const handleInputChangeUpdateVeicClient = (event) => {
+  const { name, value } = event.target;
+  setFormValuesUpdateVeicClient((prevValues) => ({
+    ...prevValues,
+    [name]: value
+  }));
+};
+
+const handleSubmitUpdateClientVeiculo = async (event) => {
+  event.preventDefault();
+
+ 
+
+  // Criar o objeto data com os valores dos campos
+
+  const form = event.target;
+  const data = {
+    cod_veiculo: form.elements.cod_veiculo.value,
+    codcliente: form.elements.codcliente.value,
+    cor_veiculo: form.elements.cor_veiculo.value,
+    km_veiculo: form.elements.km_veiculo.value,
+    ano_fabricacao_veiculo: form.elements.ano_fabricacao_veiculo.value,
+    status_veiculo: form.elements.status_veiculo.value,
+    placa_veiculo: form.elements.placa_veiculo.value,
+    tipo_veiculo: form.elements.tipo_veiculo.value,
+    fabricante_veiculo: form.elements.fabricante_veiculo.value,
+    modelo_veiculo: form.elements.modelo_veiculo.value,
+    clientecodCliente: form.elements.clientecodCliente.value
+  };
+
+  // const data = {
+  //   placa_veiculo: 'qqb8c54',
+  //   tipo_veiculo: 'carros',
+  //   cor_veiculo: 'branco',
+  //   modelo_veiculo: 'onix',
+  //   fabricante_veiculo: 'GM - Chevrolet',
+  //   ano_fabricacao_veiculo: '2019',
+  //   km_veiculo: 70000, 
+  //   obs_veiculo: 'teste',
+  //   status_veiculo: 'ativo',
+  //   clientecodCliente: 1 
+  // };
+  
+  console.log('Valor de clientecodCliente:', data.clientecodCliente);
+
+  try {
+
+    console.log('dados da data', JSON.stringify(data));
+
+    // Enviar os dados para a API usando fetch
+    const response = await fetch(`http://192.168.0.104:4000/updateVeiculoClient/${form.elements.cod_veiculo.value}`, {
+      method: 'put',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+      // body: JSON.stringify(placa_veiculo= 'qqb8c54', tipo_veiculo= 'carros',cor_veiculo= 'branco', 
+      // modelo_veiculo= 'onix', fabricante_veiculo= 'GM - Chevrolet',ano_fabricacao_veiculo= '2019',
+      // km_veiculo= 70000,obs_veiculo= 'teste',status_veiculo= 'ativo',clientecodCliente= 20 ),
+    });
+    console.log(response);
+
+    // Verificar a resposta da API
+    if (response.ok) {
+      // Dados enviados com sucesso
+      console.log('Dados enviados com sucesso!');
+    } else {
+      // Lidar com erros de resposta da API
+      console.error('Erro ao enviar os dados para a API:', response.status);
+    }
+  } catch (error) {
+    // Lidar com erros de rede ou outros erros
+    console.error('Erro ao enviar os dados para a API:', error);
+  }
+}
 
 
 
@@ -782,7 +847,7 @@ useEffect(() => {
         {/* Aqui você pode exibir as informações do veículo */}
 
         <div id='relatHistyModal'>
-        <h3 id='titleHisty'>Histórico do Veículo</h3>
+        <h3 id='titleHisty' style={{textAlign:'center', marginBottom: '20px' }}>Histórico do Veículo</h3>
 
         {searchhistyPlaca.resultado ? (
           searchhistyPlaca.resultado.map((infoVeiculo) => (
@@ -843,7 +908,7 @@ useEffect(() => {
         <Button variant="secondary" onClick={closeModal} style={{padding:'10px', width:'120px'}}>
           Fechar
         </Button>
-        <Button variant="secondary" onClick={exportPDFHisty} style={{padding:'10px'}}>
+        <Button variant="success" onClick={exportPDFHisty} style={{padding:'10px'}}>
           Gerar Relatório
         </Button>       
       </Modal.Footer>
@@ -922,32 +987,40 @@ useEffect(() => {
             
             <div className='formEditCliente' > 
 
-              <form>
+              <form onSubmit={handleSubmitUpdateClientVeiculo}> 
                 <div class="row">
                   <div class="form-group col-md-6 mb-2">
-                      <input type="text" class="form-control" value={cliente.nome_cliente} disabled />
+                      <input type="text" name='nome_cliente' class="form-control" value={cliente.nome_cliente} disabled />
+                      {/*campos abaixo irão ficar oculos e servem somente para os dados não irem em branco para a api...  */}
+                      <input type="text" name='cod_veiculo' class="form-control" value={cliente.cod_veiculo} hidden  />
+                      <input type="text" name='codcliente' class="form-control" value={cliente.codcliente} hidden />
+                      <input type="text" name='cor_veiculo'  class="form-control" value={cliente.cor_veiculo} hidden />
+                      <input type="text" name='km_veiculo' class="form-control" value={cliente.km_veiculo} hidden />
+                      <input type="text" name='ano_fabricacao_veiculo' class="form-control" value={cliente.ano_fabricacao_veiculo} hidden />
+                      <input type="text" name='status_veiculo' class="form-control" value={cliente.status_veiculo} hidden />
+
                     </div>
                     <div class="form-group col-md-6">
-                      <input type="text" class="form-control" value={cliente.sobrenome_cliente} disabled />
+                      <input type="text" name='sobrenome_cliente' class="form-control" value={cliente.sobrenome_cliente} disabled />
                     </div>
                     
                 </div>
 
                 <div class="row">
                   <div class="form-group col-md-6 mt-2">
-                      <input type="text" class="form-control" value={cliente.tipo_veiculo} disabled />
+                      <input type="text" name='tipo_veiculo' class="form-control" value={cliente.tipo_veiculo} disabled />
                     </div>
                     <div class="form-group col-md-6 mt-2">
-                      <input type="text" class="form-control" value={cliente.fabricante_veiculo} disabled/>
+                      <input type="text" name='fabricante_veiculo' class="form-control" value={cliente.fabricante_veiculo} disabled/>
                     </div>                    
                 </div>
  
                 <div class="row">
                   <div class="form-group col-md-6 mt-2">
-                      <input type="text" class="form-control" value={cliente.modelo_veiculo} disabled />
+                      <input type="text" name='modelo_veiculo' class="form-control" value={cliente.modelo_veiculo} disabled />
                     </div>
                     <div class="form-group col-md-6 mt-2">
-                      <input type="text" class="form-control" value={cliente.placa_veiculo} disabled />
+                      <input type="text" name='placa_veiculo' class="form-control" value={cliente.placa_veiculo} disabled />
                     </div>                    
                 </div>
 
@@ -959,16 +1032,29 @@ useEffect(() => {
                     <div class="form-group col-md-6 mt-2">
                       <label for="inputEstado">Nome novo proprietário</label>
                       <input type="text" class="form-control"  value={nomeCliente} readOnly />
+                      <input type="text" name='clientecodCliente' hidden class="form-control" 
+                       value={codcliente} readOnly />
+                      
                     </div>
                 </div>
+            
+              {/* <input type='submit' value='enviar' /> */}
 
-                
+        <Button variant="success" type='submit' style={{padding:'10px', width:'120px', marginTop: '30px',
+         marginRight: '10px'}}>
+          Atualizar
+        </Button> 
+        <Button variant="secondary" onClick={closeModalEditar
+        } style={{padding:'10px', width:'120px', marginTop: '30px'}}>
+          Fechar
+        </Button> 
+
               </form>
 
             </div>
           ))
         ) : (
-          <div>Nenhum histórico encontrado</div>
+          <div>Nenhuma informação encontrada!</div>
         )}
     </div>
 
@@ -976,10 +1062,9 @@ useEffect(() => {
 
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={closeModalEditar
-        } style={{padding:'10px', width:'120px'}}>
-          Fechar
-        </Button>      
+       
+
+           
       </Modal.Footer>
     </div>
   {/* </div> */}
