@@ -26,6 +26,8 @@ import {mask} from '../../../components/CnpjCpf/cpf';
 import { useEffect } from 'react'
 import Toast from 'react-bootstrap/Toast';
 import {ToastMessageStyle} from './styled';
+import Spinner from 'react-bootstrap/Spinner';
+
 
 
   const Cliente = () => {
@@ -96,9 +98,16 @@ import {ToastMessageStyle} from './styled';
       }
     }, [showToastCadError]);
 
+    //carregamento do loading
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [isTimeout, setIsTimeout] = useState(false);
+
 
     const onSubmit =  async (data) => {
       console.log('dados do data', data)
+          setIsLoading(true);
+          setIsTimeout(false);
       // Faça a chamada à API aqui, enviando os dados do formulário (variável 'data')
      
         // Criar o objeto data com os valores dos campos
@@ -129,40 +138,88 @@ import {ToastMessageStyle} from './styled';
       // numero
     };
       
-        try {
-      
-          console.log('dados da formdata', JSON.stringify(formData));
-      
-          // Enviar os dados para a API usando fetch
-          const response = await fetch('http://192.168.0.104:4000/cliente', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
-          console.log(response);
-      
-          // Verificar a resposta da API
-          if (response.ok) {
-            // Dados enviados com sucesso
-            const responseData = await response.json();
-            setMessageSucess(responseData.message);
-            setToastCadSucess(true);
-            console.log('Dados enviados com sucesso!', responseData);
-          } else {
-            // Lidar com erros de resposta da API
-            const errorResponseData = await response.json();
-            console.log('Error response data:', errorResponseData);
-            setMessageError(errorResponseData.error);
-            setToastCadError(true);
-            console.error('Erro ao enviar os dados para a API:', response.status);
+
+    try {
+      // ...
+  
+      // Antes de fazer a requisição, inicie um timer para verificar se demora mais de 10 segundos
+      const timeout = setTimeout(() => {
+        setIsTimeout(true);
+      }, 10000);
+  
+      // Fazer a requisição à API
+      const response = await fetch('http://192.168.0.104:4000/cliente', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+              // Dados enviados com sucesso
+              const responseData = await response.json();
+              setMessageSucess(responseData.message);
+              setToastCadSucess(true);
+              setIsLoading(false);
+              console.log('Dados enviados com sucesso!', responseData);
+      }
+      else {
+
+              // Lidar com erros de resposta da API
+              const errorResponseData = await response.json();
+              console.log('Error response data:', errorResponseData);
+              setMessageError(errorResponseData.error);
+              setToastCadError(true);
+              setIsLoading(false);
+              console.error('Erro ao enviar os dados para a API:', response.status);
           }
-        } catch (error) {
-          // Lidar com erros de rede ou outros erros
-          console.error('Erro ao enviar os dados para a API:', error);
-        }
-      };
+  
+      // Limpar o timer do timeout
+      clearTimeout(timeout);
+  
+      // Restante do seu código...
+  
+    } catch (error) {
+      // Restante do seu código...
+      console.error('Erro ao enviar os dados para a API:', error);
+    } 
+  };
+  
+
+      //   try {
+      
+      //     console.log('dados da formdata', JSON.stringify(formData));
+      
+      //     // Enviar os dados para a API usando fetch
+      //     const response = await fetch('http://192.168.0.104:4000/cliente', {
+      //       method: 'POST',
+      //       headers: {
+      //         'Content-Type': 'application/json',
+      //       },
+      //       body: JSON.stringify(formData),
+      //     });
+      //     console.log(response);
+      
+      //     // Verificar a resposta da API
+      //     if (response.ok) {
+      //       // Dados enviados com sucesso
+      //       const responseData = await response.json();
+      //       setMessageSucess(responseData.message);
+      //       setToastCadSucess(true);
+      //       console.log('Dados enviados com sucesso!', responseData);
+      //     } else {
+      //       // Lidar com erros de resposta da API
+      //       const errorResponseData = await response.json();
+      //       console.log('Error response data:', errorResponseData);
+      //       setMessageError(errorResponseData.error);
+      //       setToastCadError(true);
+      //       console.error('Erro ao enviar os dados para a API:', response.status);
+      //     }
+      //   } catch (error) {
+      //     // Lidar com erros de rede ou outros erros
+      //     console.error('Erro ao enviar os dados para a API:', error);
+      //   }
+      // };
     
 
 
@@ -355,8 +412,8 @@ import {ToastMessageStyle} from './styled';
 
                           <CRow className="mb-8">    
 
-                              <CCol sm={4}>
-                                <button type='submit'>Cadastrar</button>
+                              <CCol sm={2}>
+                                <CButton type='submit'>Cadastrar</CButton>
                               </CCol>
                               
                           </CRow> 
@@ -372,14 +429,14 @@ import {ToastMessageStyle} from './styled';
 
                    {/*Exibicao do Toast Success */}
 
-                  <ToastMessageStyle>
+                  <ToastMessageStyle> 
                   <Toast show={showToastCadSucess} onClose={() => closeToastCadSucess()} className='toastCadSucess'>
                       <Toast.Header  className='toastCadSucessHEader'>
                         {/* <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" /> */}
                         <strong className="me-auto">Cadastro de cliente</strong>
                         <small></small>
                         </Toast.Header>
-                        <Toast.Body className='ToasBody'><p>{messageSucess}</p>
+                        <Toast.Body className='ToasBody'><p className='MsgBodyToast'>{messageSucess}</p>
                         </Toast.Body>
                       </Toast>
                            {/*Exibicao do Toast Error */}
@@ -389,11 +446,34 @@ import {ToastMessageStyle} from './styled';
                         <strong className="me-auto">Cadastro de cliente</strong>
                         <small></small>
                         </Toast.Header>
-                        <Toast.Body className='ToasBody'><p>{messageError}</p>
+                        <Toast.Body><p className='MsgBodyToast'>{messageError}</p>
                         </Toast.Body>
                       </Toast>
                   </ToastMessageStyle>  
 
+                  {isLoading && (
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="visually-hidden">Loading...</span>
+                    </div>
+                  )}
+
+                  {isTimeout && (
+             <ToastMessageStyle> 
+                      <Toast show={isTimeout} onClose={() => closeToastCadError()} className='toastCadError'>
+                      <Toast.Header className='toastCadErrorHeader'>
+                        {/* <img src="holder.js/20x20?text=%20" className="rounded me-2" alt="" /> */}
+                        <strong className="me-auto">Cadastro de cliente</strong>
+                        <small></small>
+                        </Toast.Header>
+                        <Toast.Body><p className='MsgBodyToast'>Erro de comunicação com o servidor</p>
+                        </Toast.Body>
+                      </Toast>
+            </ToastMessageStyle> 
+
+                    // <div className="alert alert-danger" role="alert">
+                    //   A requisição demorou mais de 10 segundos.
+                    // </div>
+                  )}
 
                        
 

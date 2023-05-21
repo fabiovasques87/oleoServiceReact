@@ -49,34 +49,8 @@ span{
 }
 
 
-@media(max-width: 600px){
 
 
-.toastCadSucess{
-    margin-left:-1050px;
-}
-    
- button{
-    width: 100%;
- }   
-
- h1 {
-    font-size-14px;
- }
-}
-
-.toastCadError{
-    margin-left:-1050px;
-}
-    
- button{
-    width: 100%;
- }   
-
- h1 {
-    font-size-14px;
- }
-}
 
 
 
@@ -87,18 +61,19 @@ span{
 
 export const ToastMessageStyle = styled.div`
 
+.MsgBodyToast{
+    font-size:18px;
+    fontWeight:bold;
 
+}
 
  .toastCadSucess{
-     font-size:16px;
-     textAlign: center;
-     fontWeight:bold;
      position: fixed;
      bottom: 0;
      right: 0;
      animation: subir 6s forwards;
-    color: #fff;
-    background-color: #008000;
+     color: #008000;
+     background-color: #fff;
 
     .toastCadSucessHEader{
         background-color: #fff;
@@ -107,15 +82,12 @@ export const ToastMessageStyle = styled.div`
  }
 
  .toastCadError{
-    font-size:16px;
-    textAlign: center;
-    fontWeight:bold;
     position: fixed;
     bottom: 0;
     right: 0;
     animation: subir 6s forwards;
-    background-color: red;
-    color: #fff;
+    background-color: #fff;
+    color: red;
     
     .toastCadErrorHeader{
         background-color: #fff;
@@ -137,5 +109,21 @@ export const ToastMessageStyle = styled.div`
        transform: translateY(-700%);
      }
    }
+
+
+   @media(max-width: 600px){
+
+    .toastCadSucess, .toastCadError{
+        left:0;
+    }
+
+
+
+    .MsgBodyToast{
+        font-size:16px;
+        fontWeight:bold;
+    
+    }
+}
 
    `
