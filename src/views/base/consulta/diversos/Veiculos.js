@@ -670,10 +670,6 @@ const closeModalEditVeicClient = () => {
 //Toast
 
 
-const abrirToast = () =>{
-  setShowModalEditveicClient(true);
-}
-
 
 useEffect(() => {
   if (showModalEditveicClient) {
@@ -688,6 +684,52 @@ useEffect(() => {
   }
 }, [showModalEditveicClient]);
 
+
+
+//Exibir Modal de troca de óleo
+
+const [showModalTrocaOleo, setShowModalTrocaOleo] = useState(false);
+
+
+const openModalTrocaOleo = (codVeiculo) => {
+  // setSearchhistyPlaca(codVeiculo);
+  // informacoesApiVeicuClient(codVeiculo);
+  // setSearchhistyPlaca(codVeiculo);
+  // buscarInformacoesVeiculo(codVeiculo);
+  // ApiSearchPlaca()
+  ultimaTrocaOleo(codVeiculo)
+  setShowModalTrocaOleo(true);
+  
+};
+
+
+const closeModalTrocaOleo = () => {
+  setShowModalTrocaOleo(false);
+};
+
+
+
+const ultimaTrocaOleo = async(placa_veiculo) =>{
+
+
+  const response = await fetch(`http://192.168.0.104:4000/ultimaTrocaOleo/${placa_veiculo}`);
+  const data = await response.json();
+
+  if (!data) {
+    console.error('A resposta da API não contém a chave "resultado".');
+    return;
+  }
+
+  try {
+    const resultado = JSON.parse(data.resultado);
+    setsearchPlaca({ resultado });
+    // console.log('valores', searchPlaca)
+
+  } catch (e) {
+    console.error('Erro ao analisar a string JSON:', e.message);
+    setsearchPlaca({ resultado: [] });
+  }
+}
 
     return (
 
@@ -804,7 +846,7 @@ useEffect(() => {
             {/* <td><Button variant='success' onClick={() => handleHisty(cliente.cod_veiculo)}> Histórico</Button></td> */}
              <td className='thBoot'><Button variant='success' className='bootEditar' onClick={() => openModal(cliente.placa_veiculo)} > Histórico</Button></td>
               <td className='thBoot'><Button className='bootEditar' variant='primary' onClick={()=>openModalEditar(cliente.placa_veiculo)} >Editar</Button></td>
-              <td className='thBoot'> <Button variant="warning" className='bootEditar' > Trocar óleo </Button></td>
+              <td className='thBoot'> <Button variant="warning" onClick={()=>openModalTrocaOleo(cliente.placa_veiculo)} className='bootEditar' > Trocar óleo </Button></td>
           </tr>
           
           
@@ -963,14 +1005,14 @@ useEffect(() => {
 
 {/* renderiza resultado da search placa */}
 
-{searchPlaca.resultado.length > 0  &&
+  {searchPlaca.resultado.length > 0  &&
 
-<h4 className='titleRelat'>Histórico de servicos</h4>
+  <h4 className='titleRelat'>Histórico de servicos</h4>
 
-}
+  }
 
-{searchPlaca.resultado.length > 0 &&  searchPlaca.resultado.map((cliente) => (
-    <div key={cliente.cod_veiculo}>
+  {searchPlaca.resultado.length > 0 &&  searchPlaca.resultado.map((cliente) => (
+      <div key={cliente.cod_veiculo}>
 
 
 <Table responsive="sm">
@@ -1125,30 +1167,46 @@ useEffect(() => {
   {/* </div> */}
 </Modal>
 
-{/* Modal para mesagens do editar veiculo do cliente */}
+{/* Modal para troca de óleo*/}
 
-{/* 
 
-<Modal size="xl" show={showModalEditveicClient} onHide={closeModalEditVeicClient}>
+
+<Modal size="xl" show={showModalTrocaOleo} onHide={closeModalTrocaOleo}>
 <div className='modalContent'>
       <Modal.Header closeButton>
-        {/* <Modal.Title>Histórico do Veículo</Modal.Title> 
+       <Modal.Title>Trocar óleo lubrificante</Modal.Title> 
       </Modal.Header>
       <Modal.Body>
 
-<p style={{fontSize: '30px', textAlign: 'center'}}>{message}</p>
+  
+
+{searchPlaca.resultado.length > 0 &&  searchPlaca.resultado.map((cliente) => (
+    <div key={cliente.cod_veiculo}>
+    
+    
+    <form>
+      <input value={cliente.nome_cliente} />
+    </form>
+
+  </div>
+))}
+    
+    
+    
+    
+  
 
 
  </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={closeModalEditVeicClient} style={{padding:'10px', width:'120px'}}>
+        <Button variant="secondary" onClick={closeModalTrocaOleo} style={{padding:'10px', width:'120px'}}>
           Fechar
         </Button>
       </Modal.Footer>
     </div>
 </Modal>
 
-*/}
+
 
 {/* <div show={showModalEditveicClient} style={{background: 'red'}}> 
   {message}

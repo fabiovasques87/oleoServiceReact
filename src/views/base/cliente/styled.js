@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 
+
 export const FormArea = styled.div`
 
 
@@ -47,7 +48,14 @@ span{
     padding: 10px;
 }
 
+
 @media(max-width: 600px){
+
+
+.toastCadSucess{
+    margin-left:-1050px;
+}
+    
  button{
     width: 100%;
  }   
@@ -57,4 +65,77 @@ span{
  }
 }
 
+.toastCadError{
+    margin-left:-1050px;
+}
+    
+ button{
+    width: 100%;
+ }   
+
+ h1 {
+    font-size-14px;
+ }
+}
+
+
+
+
 `
+
+
+
+export const ToastMessageStyle = styled.div`
+
+
+
+ .toastCadSucess{
+     font-size:16px;
+     textAlign: center;
+     fontWeight:bold;
+     position: fixed;
+     bottom: 0;
+     right: 0;
+     animation: subir 6s forwards;
+    color: #fff;
+    background-color: #008000;
+
+    .toastCadSucessHEader{
+        background-color: #fff;
+        color: #000;
+    }
+ }
+
+ .toastCadError{
+    font-size:16px;
+    textAlign: center;
+    fontWeight:bold;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    animation: subir 6s forwards;
+    background-color: red;
+    color: #fff;
+    
+    .toastCadErrorHeader{
+        background-color: #fff;
+        color: #000;
+    }
+
+}
+ 
+ 
+ @keyframes subir {
+     0% {
+       transform: translateY(100%);
+     }
+    //  50% {
+    //     transform: translateY(-400%);
+    //   }
+   
+     100% {
+       transform: translateY(-700%);
+     }
+   }
+
+   `
