@@ -48,35 +48,27 @@ import Spinner from 'react-bootstrap/Spinner';
       const [cidade, setCidade] = useState('');
       const [estado, setEstado] = useState('');
 
+      
 
-      useEffect(() => {
-        const buscarUf = async () => {
-          try {
-            const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
-            setEstado(response.data.uf);
-            setValue('uf', response.data.uf);
-          } catch (error) {
-            console.log(error);
-          }
-        };
     
-        buscarUf();
-      }, []);
 
 
-  async function buscarEndereco() {
+  async function buscarEndereco(cep) {
     try {
       const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/`);
       setLogradouro(response.data.logradouro);
       setBairro(response.data.bairro);
       setCidade(response.data.localidade);
       setEstado(response.data.uf);
+      // setCep(response.data.cep_cliente)
 
       //aqui usa o register do useForm e envia os dados para a api e salvar no banco
       setValue('uf_cliente', response.data.uf);
       setValue('rua_cliente', response.data.logradouro);
       setValue('bairro_cliente', response.data.bairro);
       setValue('cidade_cliente', response.data.localidade);
+      // setValue('cep_cliente', response.data.cep_cliente);
+
 
 
     } catch (error) {
@@ -84,12 +76,20 @@ import Spinner from 'react-bootstrap/Spinner';
     }
   }
 
+  const handleChangeCep = (e) => {
+    const newCep = e.target.value;
+    setCep(newCep);
+    setValue('cep_cliente', newCep); // Atualiza o valor do campo "cep_cliente" usando setValue
+  };
+
+
+ 
 
   useEffect(()=> {
 
   }, [buscarEndereco]);
 
-    const {register, handleSubmit, reset, formState: { errors }, setValue  } =  useForm();
+    const {register, handleSubmit, formState: { errors }, setValue  } =  useForm();
 
     //controlar Toast com respostas para usuario
 
@@ -142,13 +142,13 @@ import Spinner from 'react-bootstrap/Spinner';
     const [isTimeout, setIsTimeout] = useState(false);
 
 
-    const CadCliente =  async (data) => {
+    const onSubmit =  async (data) => {
       console.log('dados do data', data)
           setIsLoading(true);
           setIsTimeout(false);
        
         const { nome_cliente, sobrenome_cliente, cpf_cliente, telefone1_cliente,telefone2_cliente,  data_nascimento_cliente	, 
-          sexo_cliente, cep_cliente, uf_cliente, cidade_cliente, rua_cliente, bairro_cliente, numero_rua_cliente
+          sexo_cliente, cep_cliente, uf_cliente, cidade_cliente, bairro_cliente, rua_cliente 
         } = data;
 
     const formData = {
@@ -162,9 +162,9 @@ import Spinner from 'react-bootstrap/Spinner';
       cep_cliente,
       uf_cliente,
       cidade_cliente,
-      rua_cliente,
       bairro_cliente,
-      numero_rua_cliente
+      rua_cliente,
+      // numero_rua_cliente
       
     };
       
@@ -192,10 +192,6 @@ import Spinner from 'react-bootstrap/Spinner';
               setToastCadSucess(true);
               setIsLoading(false);
               console.log('Dados enviados com sucesso!', responseData);
-              
-              // Limpar os campos do formulário
-              reset();
-             
       }
       else {
 
@@ -210,7 +206,6 @@ import Spinner from 'react-bootstrap/Spinner';
   
           // Limpar o timer do timeout
           clearTimeout(timeout);
-
       
           // Restante do seu código...
       
@@ -225,6 +220,10 @@ import Spinner from 'react-bootstrap/Spinner';
   
     //mascara para cnpj
     const [valor, setValor] = useState('');
+
+
+   
+    
 
 
     //chamar a função handleChangeMask sempre que o campo de cpf for alterado
@@ -247,7 +246,7 @@ import Spinner from 'react-bootstrap/Spinner';
                   <FormArea>
                     <h2 className="mb-5">Cadastro de Clientes</h2>
              
-                    <CForm onSubmit={handleSubmit(CadCliente)} > 
+                    <CForm onSubmit={handleSubmit(onSubmit)} > 
                       <CRow className="mb-8">
                         
                         <CFormLabel htmlFor="nome_cliente" className="col-sm-2 col-form-label">Nome<span>*</span></CFormLabel>
@@ -347,9 +346,8 @@ import Spinner from 'react-bootstrap/Spinner';
                               <CCol sm={4}>
                                 <CTooltip content="Após inserir o CEP, favor clicar fora do campo" >
                                   <CFormInput type='number' id='cep_cliente' name='cep_cliente' placeholder='Ex: 96418260'
-                                  value={cep} onChange={(e) => setCep(e.target.value)}
+                                  value={cep} onChange={handleChangeCep}
                                   onBlur={buscarEndereco} required  
-                                  // {...register('cep_cliente')}                              
                                   />                                                             
                                 </CTooltip>                                                     
                               </CCol>
@@ -362,7 +360,7 @@ import Spinner from 'react-bootstrap/Spinner';
                         <CFormLabel htmlFor="uf" className="col-sm-2 col-form-label">Estado</CFormLabel>
                           <CCol sm={4}>
                             <CFormInput type="text" id="uf" name='uf'
-                            value={estado} onChange={(e) => setEstado(e.target.value)}   disabled
+                            value={estado} onChange={(e) => setEstado(e.target.value)}  
                              {...register('uf_cliente')}                       
 
                             />                        
@@ -402,7 +400,7 @@ import Spinner from 'react-bootstrap/Spinner';
                         
                         <CFormLabel htmlFor="numero" className="col-sm-2 col-form-label">Número</CFormLabel>
                           <CCol sm={4}>
-                            <CFormInput type="number" id="numero_rua_cliente" name='numero_rua_cliente' 
+                            <CFormInput type="number" id="numero" name='numero' 
                             {...register('numero_rua_cliente')}
                             />                                                    
                           </CCol>

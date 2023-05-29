@@ -148,7 +148,7 @@ const _nav = [
       {
         component: CNavItem,
         name: 'Diversos',
-        to: '/base/consulta/diversos',
+        to: '/base/consulta/Diversos',
       },
       // {
       //   component: CNavItem,

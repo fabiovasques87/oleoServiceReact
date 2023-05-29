@@ -51,7 +51,7 @@ import {
 
 
 
-const Veiculos = () => {
+const Diversos = () => {
 
     //search CPF
     const [cpfSearch, setCpfSearch] = useState({ resultado: [] });
@@ -1229,4 +1229,4 @@ const ultimaTrocaOleo = async(placa_veiculo) =>{
     )
 }
 
-export default Veiculos;
+export default Diversos;

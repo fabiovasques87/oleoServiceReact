@@ -32,8 +32,8 @@ import * as icon from '@coreui/icons';
 
   const Veiculo = () => {
 
+    const {register, handleSubmit, formState: { errors }, setValue  } =  useForm();
 
-  const {register, handleSubmit, formState: { errors } } =  useForm(); //cuida das validacoes dos campos
  
 
   //busca veículos da api fipe
@@ -62,25 +62,78 @@ import * as icon from '@coreui/icons';
 
       //Mascara  CPF/CNPJ
 
+
+
+      const [cpf, setCpf] = useState(''); // Estado para o valor digitado no campo CPF
+
       const [valor, setValor] = useState('');
 
-      const handleChangeMask = (event) =>{
-        const { value } = event.target
-      
-        setValor(mask(value))
+          //search CPF
+      const [cpfSearch, setCpfSearch] = useState({ resultado: [] });
+
+
+      const handleInputCpfChange = async (event) => {
+        const newValue = event.target.value;
+        setValor(newValue);
+        handleChangeMask(event);
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+          }
+          
+          timeoutRef.current = setTimeout(() => {
+            delayedSearch(newValue);
+          }, 100);
+
+        // // handleChangeMask();
+        // delayedSearch(value);
+        
+      };
+
+    const handleChangeMask =  async (event) =>{
+        const { value } = event.target;
+        setValor(mask(value));
+         // setValor(e.target.value)}
+        //  setCpfSearch(value);
       }
 
+      const cpfSearchFunction = () => {
+        if (valor.trim() !== "") {
+          handleSubmitSearchCpf({ preventDefault: () => {} });
+        } else {
+          setCpfSearch({ resultado: [] });
+        }
+      };
 
-      //Válida campo select
+    const handleSubmitSearchCpf = async () => {
+        const response = await fetch(`http://192.168.0.104:4000/trocaCpf/${valor}`);
+        // const response = await fetch(`http://localhost:4000/trocaCpf/${valor}`);
+        const data = await response.json();
+      
+        if (!data) {
+          console.error('A resposta da API não contém a chave "resultado".');
+          setCpfNotFound(true);
+          return;
+        }
+      
+        try {
+          const resultado = JSON.parse(data.resultado);
+          setCpfSearch({ resultado });
+          setCpfNotFound(false);
+        } catch (e) {
+          console.error('Erro ao analisar a string JSON:', e.message);
+          setCpfSearch({ resultado: [] });
+          setCpfNotFound(true);
+          
+        }
+      };  
 
-      // const validaSelect = () => {
-      //   var campoSelect = document.getElementById("tipo_veiculo");
-      //   if(campoSelect.value == "" || campoSelect.value == "Selecione uma opção") {
-      //     alert("Preencha o tipo do veiculo");
-      //   } 
-      // }
 
-     
+       //funcao para pessquisa do cpf
+      useEffect(() => {
+        cpfSearchFunction();
+      }, [valor]);
+
+
 
   return (
     <>
@@ -92,21 +145,26 @@ import * as icon from '@coreui/icons';
               <CCard className="p-4">
                 <CCardBody>
                   <FormArea>
-                    <h2 className="mb-5">Cadastro de veículos</h2>
+                    <h2 className="mb-5">Cadastro de veículos Atual</h2>
              
                    <CForm onSubmit={handleSubmit()}  name='cad_veiculo'> 
                      <CRow className="mb-8">
                       
                       <CFormLabel htmlFor="proprietario" className="col-sm-2 col-form-label">CPF<span>*</span></CFormLabel>
                         <CCol sm={4}>
-                          <CFormInput type="text" name='cpf_cnpj' id="cpf_cnpj" onChange={handleChangeMask} value={valor}                        
-                          required
+                          <CFormInput type="text" name="cpf_cliente"
+                              id="cpf_cliente"
+                              required
+                              value={valor}
+                              {...register('cpf_cliente')}  
+                              onChange={handleInputCpfChange}                      
                         /> 
                         </CCol>
                     
                         <CFormLabel htmlFor="nomeProprietario" className="col-sm-2 col-form-label">Nome <span>*</span></CFormLabel>
                         <CCol sm={4}>
-                          <CFormInput type="text" name='nomeProprietario' id="nomeProprietario"                          
+                          <CFormInput type="text" name='nomeProprietario' id="nomeProprietario" 
+                                                   
                           {...register("nomeProprietario", {
                             required: "Preenchimento obrigatório",
                             minLength: {

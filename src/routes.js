@@ -5,7 +5,7 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 // Base
 const Veiculo = React.lazy(() => import('./views/base/veiculo/Veiculo')) //cadastro de veiculos
 const Cliente = React.lazy(() => import('./views/base/cliente/Cliente')) //cadastro de clientes
-const Veiculos = React.lazy(() => import('./views/base/consulta/diversos/Veiculos')) //consulta de diversos
+const Diversos = React.lazy(() => import('./views/base/consulta/diversos/Diversos')) //consulta de diversos
 const ConsultaCliente = React.lazy(() => import('./views/base/consulta/cliente/ConsultaCliente')) //consulta de clientes
 const ConsultaVeiculo = React.lazy(() => import('./views/base/consulta/veiculo/ConsultaVeiculo'))//consulta de veiculos
 const trocaOleo = React.lazy(()=> import('./views/base/relatorio/trocaOleo'))
@@ -40,7 +40,7 @@ const routes = [
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/base/veiculo', name: 'Veiculo', element: Veiculo, exact: true },//cad veiculos
   { path: '/base/cliente', name: 'Cliente', element: Cliente, exact: true },//cad clientes
-  { path: '/base/consulta/diversos', name: 'Veiculos', element: Veiculos, exact: true },//consulta diversos
+  { path: '/base/consulta/diversos', name: 'Diversos', element: Diversos, exact: true },//consulta diversos
   { path: '/base/consulta/cliente', name: 'ConsultaCliente', element: ConsultaCliente, exact: true },//consulta Clientes
   { path: '/base/consulta/veiculo', name: 'ConsultaVeiculo', element: ConsultaVeiculo, exact: true },//consulta Veículos
   { path: '/base/relatorio', name: 'trocaOleo', element: trocaOleo, exact: true },//consulta Veículos
