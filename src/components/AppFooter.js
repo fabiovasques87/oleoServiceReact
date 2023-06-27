@@ -9,7 +9,7 @@ const AppFooter = () => {
         <span className="ms-1"></span>
       </div>
       <div className="ms-auto">
-        <span className="me-1">&copy; 2023 Desenvolvido por Fábio Vasques</span>
+       {/* <span className="me-1">&copy; 2023 Desenvolvido por Fábio Vasques</span>*/}
        
       </div>
     </CFooter>

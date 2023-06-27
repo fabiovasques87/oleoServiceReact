@@ -56,15 +56,11 @@ const _nav = [
      
       {
         component: CNavItem,
-        name: 'Clientes',
+        name: 'Audiencia',
         //to: '/base/veiculo/Teste',
-        to: '/base/cliente',
+        to: '/base/cadastros',
       },
-      {
-        component: CNavItem,
-        name: 'Veículos',
-        to: '/base/veiculo',
-      },
+     
     ],
   },
   //     {
@@ -137,19 +133,11 @@ const _nav = [
     items: [
       {
         component: CNavItem,
-        name: 'Clientes',
+        name: 'Audiências',
         to: '/base/consulta/cliente',
       },
-      {
-        component: CNavItem,
-        name: 'Veículos',
-        to: '/base/consulta/veiculo',
-      },
-      {
-        component: CNavItem,
-        name: 'Diversos',
-        to: '/base/consulta/Diversos',
-      },
+    
+      
       // {
       //   component: CNavItem,
       //   name: 'Dropdowns',
@@ -263,6 +251,7 @@ const _nav = [
   //     },
   //   ],
   // },
+  /*
   {
     component: CNavGroup,
     name: 'Relatórios',
@@ -273,8 +262,10 @@ const _nav = [
         name: 'Troca de óleo',
         to: '/base/relatorio',
       },
+   
     ]
   }
+  */
   // {
   //   component: CNavTitle,
   //   name: 'Extras',
