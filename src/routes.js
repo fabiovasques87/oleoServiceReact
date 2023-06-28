@@ -3,8 +3,8 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 
 // Base
-const cadastros = React.lazy(() => import('./views/base/cadastros/Audiencia')) //cadastro de clientes
-//const Cliente = React.lazy(() => import('./views/base/cliente/Cliente')) //cadastro de clientes
+const Veiculo = React.lazy(() => import('./views/base/veiculo/Veiculo')) //cadastro de veiculos
+const Cliente = React.lazy(() => import('./views/base/cliente/Cliente')) //cadastro de clientes
 const Diversos = React.lazy(() => import('./views/base/consulta/diversos/Diversos')) //consulta de diversos
 const ConsultaCliente = React.lazy(() => import('./views/base/consulta/cliente/ConsultaCliente')) //consulta de clientes
 const ConsultaVeiculo = React.lazy(() => import('./views/base/consulta/veiculo/ConsultaVeiculo'))//consulta de veiculos
@@ -38,8 +38,8 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/base/cadastros', name: 'cadastros', element: cadastros, exact: true },//cad Audiencias
-  //{ path: '/base/cliente', name: 'Cliente', element: Cliente, exact: true },//cad clientes
+  { path: '/base/veiculo', name: 'Veiculo', element: Veiculo, exact: true },//cad veiculos
+  { path: '/base/cliente', name: 'Cliente', element: Cliente, exact: true },//cad clientes
   { path: '/base/consulta/diversos', name: 'Diversos', element: Diversos, exact: true },//consulta diversos
   { path: '/base/consulta/cliente', name: 'ConsultaCliente', element: ConsultaCliente, exact: true },//consulta Clientes
   { path: '/base/consulta/veiculo', name: 'ConsultaVeiculo', element: ConsultaVeiculo, exact: true },//consulta Veículos

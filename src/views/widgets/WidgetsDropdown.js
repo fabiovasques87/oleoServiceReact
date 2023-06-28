@@ -92,7 +92,7 @@ useEffect(() => {
               </span>
           */}
             </>}
-           // title="Trocas de óleo realizadas"
+            title="Trocas de óleo realizadas"
             action={<CDropdown alignment="end">
               {/*
             <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -126,7 +126,7 @@ useEffect(() => {
               </span>
           */}
             </>}
-            //title="Trocas à vencer"
+            title="Trocas à vencer"
             action={<CDropdown alignment="end">
               {/*
              <CDropdownToggle color="transparent" caret={false} className="p-0">
@@ -160,7 +160,7 @@ useEffect(() => {
               </span>
           */}
             </>}
-           // title="Trocas vencidas"
+            title="Trocas vencidas"
             action={<CDropdown alignment="end">
               {/*
               <CDropdownToggle color="transparent" caret={false} className="p-0">
